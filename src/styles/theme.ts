@@ -1,11 +1,11 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, DefaultTheme } from 'styled-components';
 import 'styled-components';
 
 const borderRadius = {
-  PrimaryBorderRadius: '13px',
+  R13: '13px',
 };
 
-export const lightTheme = {
+export const lightTheme: DefaultTheme = {
     primary: "#78A353",
     primary80: "#93B575",
     primary40: "#C9DABA",
@@ -23,9 +23,27 @@ export const lightTheme = {
 
 // 색과 관련된 GlobalStyle
 const GlobalColors = createGlobalStyle`
-body {
-
-}
+body {}
 `;
 
 export default GlobalColors;
+
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    primary: string;
+    primary80: string;
+    primary40: string;
+    purple: string;
+    black: string;
+    gray4: string;
+    gray3: string;
+    gray2: string;
+    gray1:string;
+    white: string;
+    red: string;
+    // BorderRadius
+    borderRadius: {
+      R13: string;
+    }
+  }
+}
