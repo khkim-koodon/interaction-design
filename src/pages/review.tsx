@@ -115,7 +115,7 @@ const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10%;
+  margin-top: 5%;
 `;
 
 const MotionContainer = styled(motion.div)`
