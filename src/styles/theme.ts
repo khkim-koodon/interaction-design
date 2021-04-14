@@ -17,6 +17,10 @@ export const lightTheme: DefaultTheme = {
     gray1: "#e5e5e5",
     white: "#ffffff",
     red: "#BD4343",
+
+    // 새로 추가
+    gray1__50: "#f2f2f2",
+
   // BorderRadius
   borderRadius,
 };
@@ -41,6 +45,10 @@ declare module 'styled-components' {
     gray1:string;
     white: string;
     red: string;
+
+    // 새로 추가
+    gray1__50: string;
+
     // BorderRadius
     borderRadius: {
       R13: string;

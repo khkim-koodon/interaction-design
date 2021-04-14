@@ -3,12 +3,19 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const PopSpeechBubble = ({ text, backgroundColor, duration, className }) => {
+const PopSpeechBubble = ({
+  text,
+  backgroundColor,
+  duration,
+  className,
+  trianglePosition,
+}) => {
   PopSpeechBubble.propTypes = {
     text: PropTypes.string.isRequired,
     backgroundColor: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
     className: PropTypes.string,
+    trianglePosition: PropTypes.string.isRequired, // "top" or "bottom"
   };
   // 텍스트 길이가 너무 길면 안 됨.
   const [isClicked, setIsClicked] = useState(false);
@@ -29,19 +36,53 @@ const PopSpeechBubble = ({ text, backgroundColor, duration, className }) => {
         animate="end"
       >
         <Container backgroundColor={backgroundColor}>
-          <p>{text}</p>
-          <svg width="10px" height="4px" viewBox="0 0 10 4" version="1.1">
-            <g id="Home-Modal" stroke="none" fill="none" opacity="0.95">
+          {trianglePosition === 'top' && (
+            <svg width="10px" height="4px" viewBox="0 0 10 4" version="1.1">
               <g
-                id="consignment-01-1"
-                transform="translate(-183.000000, -543.000000)"
+                id="002-Write-a-Review"
+                stroke="none"
+                strokeWidth="1"
+                fill="none"
+                fillRule="evenodd"
+                opacity="0.95"
               >
-                <g id="Group-3" transform="translate(86.000000, 507.000000)">
-                  <polygon id="Triangle" points="102 40 107 36 97 36"></polygon>
+                <g
+                  id="Write-a-Review-5-1"
+                  transform="translate(-183.000000, -396.000000)"
+                  fill="#78A353"
+                >
+                  <g
+                    id="Speech-Bubble-Copy"
+                    transform="translate(45.000000, 396.000000)"
+                  >
+                    <polygon
+                      id="Triangle"
+                      transform="translate(143.000000, 2.000000) scale(1, -1) translate(-143.000000, -2.000000) "
+                      points="143 4 148 0 138 0"
+                    ></polygon>
+                  </g>
                 </g>
               </g>
-            </g>
-          </svg>
+            </svg>
+          )}
+          <p>{text}</p>
+          {trianglePosition === 'bottom' && (
+            <svg width="10px" height="4px" viewBox="0 0 10 4" version="1.1">
+              <g id="Home-Modal" stroke="none" fill="none" opacity="0.95">
+                <g
+                  id="consignment-01-1"
+                  transform="translate(-183.000000, -543.000000)"
+                >
+                  <g id="Group-3" transform="translate(86.000000, 507.000000)">
+                    <polygon
+                      id="Triangle"
+                      points="102 40 107 36 97 36"
+                    ></polygon>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          )}
         </Container>
       </motion.div>
     </motion.div>
