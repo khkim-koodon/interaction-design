@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 
 const TextStyle = ({
   type, // 기본값은 Styled-components에서 p
-  text,
+  // text,
+  children,
   fontSize,
   weight,
   lineHeight,
@@ -14,7 +15,8 @@ const TextStyle = ({
   marginTop,
 }: {
   type: any;
-  text: string;
+  // text: string;
+  children: any;
   fontSize: string;
   weight: number;
   lineHeight?: string;
@@ -25,19 +27,20 @@ const TextStyle = ({
 }) => {
   const themeContext = useContext(ThemeContext);
   const textColorFunc = () => {
-    if (color === 'gray1') {
-      return themeContext['gray1'];
-    } else if (color === 'gray2') {
-      return themeContext['gray2'];
-    } else if (color === 'gray3') {
-      return themeContext['gray3'];
-    } else if (color === 'gray4') {
-      return themeContext['gray4'];
-    } else if (color === 'black') {
-      return themeContext['black'];
-    } else if (color === 'white') {
-      return themeContext['white'];
-    }
+    // if (color === 'gray1') {
+    //   return themeContext['gray1'];
+    // } else if (color === 'gray2') {
+    //   return themeContext['gray2'];
+    // } else if (color === 'gray3') {
+    //   return themeContext['gray3'];
+    // } else if (color === 'gray4') {
+    //   return themeContext['gray4'];
+    // } else if (color === 'black') {
+    //   return themeContext['black'];
+    // } else if (color === 'white') {
+    //   return themeContext['white'];
+    // }
+    return themeContext[color] || themeContext['black'];
   };
   const textColor = textColorFunc();
 
@@ -52,7 +55,7 @@ const TextStyle = ({
       opacity={opacity}
       marginTop={marginTop}
     >
-      {text}
+      {children}
     </Text>
   );
 };

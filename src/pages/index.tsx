@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import Link from 'next/Link';
 import FilterReset from '../framer/filter-reset';
+import H616px700 from '../elements/typography/h6-16px-700';
 
 const Index = () => {
   // onAnimationEnd={() => setMotion(false)}
@@ -13,6 +15,12 @@ const Index = () => {
         onClick={() => runAnimation()}
       /> */}
       <Main>
+        <Link href="/review">
+          <a>
+            <H616px700 text="Review" color="black" />
+          </a>
+        </Link>
+
         {/* <PopSpeechBubble
           key={count}
           text="1월 한 달간 택배 신청이 무료!"
@@ -26,10 +34,10 @@ const Index = () => {
           toggle={toggle}
           setToggle={setToggle}
         /> */}
-        <FilterReset //
+        {/* <FilterReset //
           toggle={toggle}
           setToggle={setToggle}
-        />
+        /> */}
         {/* <CheckInCircle /> */}
       </Main>
     </>

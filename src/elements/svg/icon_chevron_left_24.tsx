@@ -1,12 +1,19 @@
 import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
-const IconChevronLeft24 = ({ className }: { className: string }) => {
+const IconChevronLeft24 = ({
+  onClick,
+  className,
+}: {
+  onClick: any;
+  className: string;
+}) => {
   const themeContext = useContext(ThemeContext);
   const color: string = themeContext.black;
 
   return (
-    <svg
+    <SVG
+      onClick={onClick}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -25,7 +32,11 @@ const IconChevronLeft24 = ({ className }: { className: string }) => {
           </g>
         </g>
       </g>
-    </svg>
+    </SVG>
   );
 };
 export default IconChevronLeft24;
+
+const SVG = styled.svg`
+  cursor: pointer;
+`;

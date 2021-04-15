@@ -9,15 +9,16 @@ import H616px700 from '../elements/typography/h6-16px-700';
 import P314px400 from '../elements/typography/p3-14px-400';
 import TextareaAutosize from 'react-textarea-autosize';
 import IconCamera24 from '../elements/svg/icon_camera_24';
+import BigBtn from '../components/big-btn';
 
 const Review = () => {
   const starCount = [1, 2, 3, 4, 5];
   const [selected, setSelected] = useState(false);
-  const [reviewText, setReviewText] = useState('');
-
   const setStar = () => {
     setSelected(!selected);
   };
+
+  const [reviewText, setReviewText] = useState('');
 
   return (
     <Main>
@@ -26,21 +27,18 @@ const Review = () => {
         initial="initial"
         animate={selected ? 'animate' : 'initial'}
       >
-        {/* status bar image */}
-        <img src="/images/statusBar_iPhone8@3x.jpg" />
-
         <NavigationBar title="포토 리뷰 작성" />
 
         <ProductBox>
           <img src="/images/review.jpg" />
           <ProductName>
-            <H616px700 text="브랜드명" color="black" />
+            <H616px700 color="black">브랜드명</H616px700>
             <P314px400 text="상품 이름이 들어갑니다" color="gray4" />
           </ProductName>
         </ProductBox>
 
         <motion.div
-          variants={fadeOut}
+          variants={textFadeOut}
           initial={false}
           animate={selected ? 'animate' : 'initial'}
         >
@@ -48,11 +46,11 @@ const Review = () => {
         </motion.div>
 
         <StarContainer>
-          {starCount.map((index) => (
+          {starCount.map((value, index) => (
             <motion.button
               onClick={() => setStar()}
               key={index}
-              variants={variants}
+              variants={starUp}
             >
               <IconStar48Fill selected={selected} />
             </motion.button>
@@ -72,7 +70,6 @@ const Review = () => {
             minLength={19}
             maxLength={499}
           />
-
           <CountCharacters>
             <P314px400 text={String(reviewText.length)} color="gray2" />
             <P314px400 text="/500" color="gray2" />
@@ -89,13 +86,22 @@ const Review = () => {
           <P314px400 text="사진 올리기" color="black" />
           <P314px400 text="0/5" color="black" />
         </MotionUploadPhoto>
-        {/* 
-        <div
-          style={{
-            display: selected ? 'none' : 'block',
-            transition: 'display 0.3s ease-in-out',
-          }}
+
+        <MotionButtonArea
+          variants={fadeIn}
+          initial={false}
+          animate={selected ? 'animate' : 'initial'}
+          style={{ display: selected ? 'flex' : 'none' }}
         >
+          <P314px400
+            text="글과 사진이 모두 있어야 리뷰를 등록할 수 있어요!"
+            color="gray2"
+            marginTop="48px"
+          />
+          <BigBtn text="포토 리뷰 등록" color="white" marginTop="16px" />
+        </MotionButtonArea>
+
+        <PopSpeechBubbleWrap style={{ display: selected ? 'none' : 'block' }}>
           <PopSpeechBubble
             text="📷 포토 리뷰 작성 시 포인트 10,000원 지급"
             backgroundColor="primary"
@@ -103,7 +109,7 @@ const Review = () => {
             className=""
             trianglePosition="top"
           />
-        </div> */}
+        </PopSpeechBubbleWrap>
       </MotionContainer>
     </Main>
   );
@@ -112,21 +118,21 @@ const Review = () => {
 export default Review;
 
 const Main = styled.main`
+  overflow-x: hidden; // 애니메이션 작동 시 width 작아지는 문제 해결
+  overflow-y: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
 `;
 
 const MotionContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
-  max-width: 375px;
-  min-height: 667px;
-  box-shadow: rgb(0 0 0 / 16%) 0px 0px 19px 0px;
+  min-height: 100vh;
+  max-width: 480px;
+  box-shadow: 0px 0px 19px 0px rgb(0, 0, 0, 0.16);
   display: flex;
   flex-direction: column;
-  position: relative;
 
   img {
     width: 100%;
@@ -169,7 +175,7 @@ const StarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 36px 0 16px;
+  margin: 36px 0 0;
 
   svg {
     margin-left: 4px;
@@ -179,12 +185,15 @@ const StarContainer = styled.div`
   }
 `;
 
+const MotionTextfield = styled(motion.div)`
+  margin: 36px 16px 0;
+`;
+
 const MultiLineTextField = styled(TextareaAutosize)`
   background-color: ${({ theme }) => theme.gray1__50};
+  border: transparent;
   border-radius: 2px;
   resize: none; // 늘이고 줄이는 기능 없애기
-
-  border: transparent;
   width: 100%;
 
   /* text */
@@ -209,6 +218,7 @@ const CountCharacters = styled.div`
   align-items: end;
   text-align: right;
   position: relative;
+  margin-top: -1px;
 
   p:nth-child(1) {
     position: absolute;
@@ -223,23 +233,31 @@ const CountCharacters = styled.div`
   }
 `;
 
-const MotionTextfield = styled(motion.div)`
-  margin: 36px 16px 0;
-`;
-
 const MotionUploadPhoto = styled(motion.div)`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
   width: 133px;
   height: 133px;
-  margin: 40px 0 0 16px;
+  margin: 35px 0 0 16px; // Text Area 아래 생기는 5px 영역 보정
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const variants = {
+const PopSpeechBubbleWrap = styled.div`
+  margin-top: 16px;
+`;
+
+const MotionButtonArea = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 16px;
+`;
+
+const starUp = {
   initial: { y: 0 },
 
   animate: { y: -120, rotateY: 720 },
@@ -260,17 +278,19 @@ const stagger = {
   },
 };
 
-const fadeOut = {
+const textFadeOut = {
   initial: {
     opacity: 1,
+    scale: 1,
     y: 0,
   },
 
   animate: {
     opacity: 0,
+    scale: 0,
     y: -16,
     transition: {
-      duration: 0.1,
+      duration: 0.2,
     },
   },
 };
