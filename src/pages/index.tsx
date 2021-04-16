@@ -15,7 +15,7 @@ const Index = () => {
         onClick={() => runAnimation()}
       /> */}
       <Main>
-        <Link href="/review">
+        <Link href="/write-review">
           <a>
             <H616px700 color="black">Review</H616px700>
           </a>

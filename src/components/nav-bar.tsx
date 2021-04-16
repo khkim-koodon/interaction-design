@@ -14,7 +14,7 @@ const NavigationBar = ({ title }: { title: string }) => {
             onClick={() => router.back()}
             className="left__icon"
           />
-          <P216px400 text={title} color="black" />
+          <P216px400 color="black">{title}</P216px400>
         </Container>
       </Nav>
     </>
