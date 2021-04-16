@@ -1,20 +1,17 @@
 import TextStyle from './atoms/text-style';
 
 const H616px700 = ({
-  // text,
   children,
   color,
   marginTop,
 }: {
-  // text: string;
-  children: any;
+  children: string;
   color: string;
   marginTop?: string;
 }) => {
   return (
     <TextStyle
       type="h6"
-      // text={text}
       fontSize="16px"
       weight={700}
       color={color}

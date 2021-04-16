@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import P118px400 from '../elements/typography/p1-18px-400 copy';
+import P118px400 from '../elements/typography/p1-18px-400';
 
 const BigBtn = ({
   text,
@@ -12,7 +12,7 @@ const BigBtn = ({
 }) => {
   return (
     <Button marginTop={marginTop}>
-      <P118px400 text={text} color={color} />
+      <P118px400 color={color}>{text}</P118px400>
     </Button>
   );
 };

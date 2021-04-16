@@ -1,6 +1,6 @@
 import TextStyle from './atoms/text-style';
 
-const H324px400 = ({
+const H518px700 = ({
   children,
   color,
   marginTop,
@@ -11,11 +11,11 @@ const H324px400 = ({
 }) => {
   return (
     <TextStyle
-      type="h3"
-      fontSize="24px"
-      weight={400}
+      type="h5"
+      fontSize="18px"
+      weight={700}
       color={color}
-      lineHeight="36px"
+      lineHeight="27px"
       marginTop={marginTop}
     >
       {children}
@@ -23,4 +23,4 @@ const H324px400 = ({
   );
 };
 
-export default H324px400;
+export default H518px700;

@@ -1,25 +1,26 @@
 import TextStyle from './atoms/text-style';
 
-const P118px400 = ({
-  text,
+const P412px400 = ({
+  children,
   color,
   marginTop,
 }: {
-  text: string;
+  children: string;
   color: string;
   marginTop?: string;
 }) => {
   return (
     <TextStyle
       type="p"
-      text={text}
-      fontSize="18px"
+      fontSize="12px"
       weight={400}
       color={color}
-      lineHeight="27px"
+      lineHeight="18px"
       marginTop={marginTop}
-    />
+    >
+      {children}
+    </TextStyle>
   );
 };
 
-export default P118px400;
+export default P412px400;

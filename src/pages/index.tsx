@@ -17,7 +17,7 @@ const Index = () => {
       <Main>
         <Link href="/review">
           <a>
-            <H616px700 text="Review" color="black" />
+            <H616px700 color="black">Review</H616px700>
           </a>
         </Link>
 

@@ -33,7 +33,7 @@ const Review = () => {
           <img src="/images/review.jpg" />
           <ProductName>
             <H616px700 color="black">브랜드명</H616px700>
-            <P314px400 text="상품 이름이 들어갑니다" color="gray4" />
+            <P314px400 color="gray4">상품 이름이 들어갑니다</P314px400>
           </ProductName>
         </ProductBox>
 
@@ -42,11 +42,11 @@ const Review = () => {
           initial={false}
           animate={selected ? 'animate' : 'initial'}
         >
-          <H324px400 text="쿠돈 구매 경험은 어떠셨어요?" color="black" />
+          <H324px400 color="black">쿠돈 구매 경험은 어떠셨어요?</H324px400>
         </motion.div>
 
         <StarContainer>
-          {starCount.map((value, index) => (
+          {starCount.map((index) => (
             <motion.button
               onClick={() => setStar()}
               key={index}
@@ -71,8 +71,8 @@ const Review = () => {
             maxLength={499}
           />
           <CountCharacters>
-            <P314px400 text={String(reviewText.length)} color="gray2" />
-            <P314px400 text="/500" color="gray2" />
+            <P314px400 color="gray2">{String(reviewText.length)}</P314px400>
+            <P314px400 color="gray2">/500</P314px400>
           </CountCharacters>
         </MotionTextfield>
 
@@ -83,8 +83,8 @@ const Review = () => {
           style={{ display: selected ? 'flex' : 'none' }}
         >
           <IconCamera24 />
-          <P314px400 text="사진 올리기" color="black" />
-          <P314px400 text="0/5" color="black" />
+          <P314px400 color="black">사진 올리기</P314px400>
+          <P314px400 color="black">0/5</P314px400>
         </MotionUploadPhoto>
 
         <MotionButtonArea
@@ -93,11 +93,9 @@ const Review = () => {
           animate={selected ? 'animate' : 'initial'}
           style={{ display: selected ? 'flex' : 'none' }}
         >
-          <P314px400
-            text="글과 사진이 모두 있어야 리뷰를 등록할 수 있어요!"
-            color="gray2"
-            marginTop="48px"
-          />
+          <P314px400 color="gray2" marginTop="48px">
+            글과 사진이 모두 있어야 리뷰를 등록할 수 있어요!
+          </P314px400>
           <BigBtn text="포토 리뷰 등록" color="white" marginTop="16px" />
         </MotionButtonArea>
 
