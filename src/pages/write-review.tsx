@@ -12,22 +12,18 @@ import IconCamera24 from '../elements/svg/icon_camera_24';
 import BigBtn from '../components/big-btn';
 
 const WriteReview = () => {
-  const starCount = [1, 2, 3, 4, 5];
-  const [selected, setSelected] = useState(false);
-  const setStar = () => {
-    setSelected(!selected);
+  const [starCount, setStarCount] = useState([0, 0, 0, 0, 0]); // 0: off 1: on
+  const [starAnimation, setStarAnimation] = useState(false);
+  const activeStarAnimation = () => {
+    setStarAnimation(true); // production에서는 true로
   };
 
   const [reviewText, setReviewText] = useState('');
 
   return (
     <Main>
-      <MotionContainer
-        variants={stagger}
-        initial="initial"
-        animate={selected ? 'animate' : 'initial'}
-      >
-        <NavigationBar title="포토 리뷰 작성" />
+      <Container>
+        <NavigationBar leftAction="back" title="포토 리뷰 작성" />
 
         <ProductBox>
           <img src="/images/review.jpg" />
@@ -40,28 +36,39 @@ const WriteReview = () => {
         <motion.div
           variants={textFadeOut}
           initial={false}
-          animate={selected ? 'animate' : 'initial'}
+          animate={starAnimation ? 'animate' : 'initial'}
         >
           <H324px400 color="black">쿠돈 구매 경험은 어떠셨어요?</H324px400>
         </motion.div>
 
-        <StarContainer>
-          {starCount.map((index) => (
+        {/* S of Star Area */}
+        <MotionStarContainer
+          variants={stagger}
+          initial="initial"
+          animate={starAnimation ? 'animate' : 'initial'}
+        >
+          {starCount.map((value, idx) => (
             <motion.button
-              onClick={() => setStar()}
-              key={index}
-              variants={starUp}
+              onClick={() => activeStarAnimation()}
+              key={idx}
+              variants={starRotateUp}
             >
-              <IconStar48Fill selected={selected} />
+              <IconStar48Fill
+                idx={idx}
+                value={value}
+                starCount={starCount}
+                setStarCount={setStarCount}
+              />
             </motion.button>
           ))}
-        </StarContainer>
+        </MotionStarContainer>
+        {/* E of Star Area */}
 
         <MotionTextfield
           variants={fadeIn}
           initial={false}
-          animate={selected ? 'animate' : 'initial'}
-          style={{ display: selected ? 'block' : 'none' }}
+          animate={starAnimation ? 'animate' : 'initial'}
+          style={{ display: starAnimation ? 'block' : 'none' }}
         >
           <MultiLineTextField
             onChange={(e) => setReviewText(e.target.value)}
@@ -79,8 +86,8 @@ const WriteReview = () => {
         <MotionUploadPhoto
           variants={fadeIn}
           initial={false}
-          animate={selected ? 'animate' : 'initial'}
-          style={{ display: selected ? 'flex' : 'none' }}
+          animate={starAnimation ? 'animate' : 'initial'}
+          style={{ display: starAnimation ? 'flex' : 'none' }}
         >
           <IconCamera24 />
           <P314px400 color="black">사진 올리기</P314px400>
@@ -90,8 +97,8 @@ const WriteReview = () => {
         <MotionButtonArea
           variants={fadeIn}
           initial={false}
-          animate={selected ? 'animate' : 'initial'}
-          style={{ display: selected ? 'flex' : 'none' }}
+          animate={starAnimation ? 'animate' : 'initial'}
+          style={{ display: starAnimation ? 'flex' : 'none' }}
         >
           <P314px400 color="gray2" marginTop="48px">
             글과 사진이 모두 있어야 리뷰를 등록할 수 있어요!
@@ -99,7 +106,9 @@ const WriteReview = () => {
           <BigBtn text="포토 리뷰 등록" color="white" marginTop="16px" />
         </MotionButtonArea>
 
-        <PopSpeechBubbleWrap style={{ display: selected ? 'none' : 'block' }}>
+        <PopSpeechBubbleWrap
+          style={{ display: starAnimation ? 'none' : 'block' }}
+        >
           <PopSpeechBubble
             text="📷 포토 리뷰 작성 시 포인트 10,000원 지급"
             backgroundColor="primary"
@@ -108,7 +117,7 @@ const WriteReview = () => {
             trianglePosition="top"
           />
         </PopSpeechBubbleWrap>
-      </MotionContainer>
+      </Container>
     </Main>
   );
 };
@@ -123,7 +132,7 @@ const Main = styled.main`
   align-items: center;
 `;
 
-const MotionContainer = styled(motion.div)`
+const Container = styled.div`
   width: 100%;
   height: 100%;
   min-height: 100vh;
@@ -133,7 +142,9 @@ const MotionContainer = styled(motion.div)`
   flex-direction: column;
 
   img {
-    width: 100%;
+    width: 48px;
+    height: 48px;
+    padding: 3px;
   }
 
   h3 {
@@ -169,7 +180,7 @@ const ProductName = styled.div`
   margin-bottom: 2px; // 시각 보정
 `;
 
-const StarContainer = styled.div`
+const MotionStarContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -255,7 +266,7 @@ const MotionButtonArea = styled(motion.div)`
   margin: 0 16px;
 `;
 
-const starUp = {
+const starRotateUp = {
   initial: { y: 0 },
 
   animate: { y: -120, rotateY: 720 },
