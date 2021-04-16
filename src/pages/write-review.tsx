@@ -11,7 +11,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import IconCamera24 from '../elements/svg/icon_camera_24';
 import BigBtn from '../components/big-btn';
 
-const Review = () => {
+const WriteReview = () => {
   const starCount = [1, 2, 3, 4, 5];
   const [selected, setSelected] = useState(false);
   const setStar = () => {
@@ -113,7 +113,7 @@ const Review = () => {
   );
 };
 
-export default Review;
+export default WriteReview;
 
 const Main = styled.main`
   overflow-x: hidden; // 애니메이션 작동 시 width 작아지는 문제 해결
