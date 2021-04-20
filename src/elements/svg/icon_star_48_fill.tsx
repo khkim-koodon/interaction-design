@@ -39,14 +39,12 @@ const IconStar48Fill = ({
     }
   };
 
-  // console.log(starCount);
-
   return (
     <MotionSVG
       onClick={activeStar}
-      // variants={starRotate}
-      // initial={false}
-      // animate={starCount !== [0, 0, 0, 0, 0] ? 'animate' : 'initial'}
+      variants={starRotate}
+      initial={false}
+      animate={starCount === [0, 0, 0, 0, 0] ? 'animate' : 'initial'}
       starCount={starCount}
       xmlns="http://www.w3.org/2000/svg"
       width="48"
@@ -78,14 +76,11 @@ export default IconStar48Fill;
 
 const MotionSVG = styled(motion.svg)<{ starCount: number[] }>`
   path {
-    transition: 0.1s ease-in-out;
-    transform: ${({ starCount }) =>
-      starCount !== [0, 0, 0, 0, 0] ? 'rotateY(720deg)' : 'rotateY(0)'};
+    transition: 0.05s ease-in-out;
   }
 `;
 
 const starRotate = {
-  initial: { y: 0 },
-
-  animate: { rotateY: 720 },
+  initial: {},
+  animate: { rotateY: 360 },
 };

@@ -5,7 +5,7 @@ const P314px400 = ({
   color,
   marginTop,
 }: {
-  children: string;
+  children: any;
   color: string;
   marginTop?: string;
 }) => {

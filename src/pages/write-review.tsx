@@ -15,10 +15,38 @@ const WriteReview = () => {
   const [starCount, setStarCount] = useState([0, 0, 0, 0, 0]); // 0: off 1: on
   const [starAnimation, setStarAnimation] = useState(false);
   const activeStarAnimation = () => {
-    setStarAnimation(true); // production에서는 true로
+    setStarAnimation(!starAnimation); // production에서는 true로
+  };
+  const [reviewText, setReviewText] = useState('');
+
+  // S of upload Image
+  const [images, setImages] = useState<string[]>([]);
+  const imageHandler = (e: any) => {
+    const reader = new FileReader();
+
+    // console.log(e.target.files);
+    // https://www.youtube.com/watch?v=iBonBC-ySgo
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      // console.log(fileArray);
+
+      // Array.cancat()
+      // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
+      images.length + fileArray.length < 6 // 사진은 5장까지만 올릴 수 있음.
+        ? setImages((prevImages: string[]) => prevImages.concat(fileArray))
+        : alert('사진은 5장까지만 올릴 수 있어요 😂');
+
+      Array.from(e.target.files).map((file: any) => URL.revokeObjectURL(file));
+    }
   };
 
-  const [reviewText, setReviewText] = useState('');
+  const renderPhotos = (source: string[]) => {
+    return source.map((photo: string) => {
+      return <PreviewPhoto src={photo} key={photo} />;
+    });
+  };
 
   return (
     <Main>
@@ -26,7 +54,7 @@ const WriteReview = () => {
         <NavigationBar leftAction="back" title="포토 리뷰 작성" />
 
         <ProductBox>
-          <img src="/images/review.jpg" />
+          <img className="product__img" src="/images/review.jpg" />
           <ProductName>
             <H616px700 color="black">브랜드명</H616px700>
             <P314px400 color="gray4">상품 이름이 들어갑니다</P314px400>
@@ -47,7 +75,7 @@ const WriteReview = () => {
           initial="initial"
           animate={starAnimation ? 'animate' : 'initial'}
         >
-          {starCount.map((value, idx) => (
+          {starCount.map((_, idx) => (
             <motion.button
               onClick={() => activeStarAnimation()}
               key={idx}
@@ -55,7 +83,6 @@ const WriteReview = () => {
             >
               <IconStar48Fill
                 idx={idx}
-                value={value}
                 starCount={starCount}
                 setStarCount={setStarCount}
               />
@@ -83,7 +110,7 @@ const WriteReview = () => {
           </CountCharacters>
         </MotionTextfield>
 
-        <MotionUploadPhoto
+        {/* <MotionUploadPhoto
           variants={fadeIn}
           initial={false}
           animate={starAnimation ? 'animate' : 'initial'}
@@ -92,7 +119,32 @@ const WriteReview = () => {
           <IconCamera24 />
           <P314px400 color="black">사진 올리기</P314px400>
           <P314px400 color="black">0/5</P314px400>
-        </MotionUploadPhoto>
+        </MotionUploadPhoto> */}
+
+        {/* https://github.com/facebook/react/issues/310 */}
+        <PhotoUploadArea
+          variants={fadeIn}
+          initial={false}
+          animate={starAnimation ? 'animate' : 'initial'}
+          style={{ display: starAnimation ? 'flex' : 'none' }}
+        >
+          <MotionUploadPhotoLabel htmlFor="upload-photo">
+            <IconCamera24 />
+            <P314px400 color="black">사진 올리기</P314px400>
+            <P314px400 color="black">{String(images.length)}/5</P314px400>
+            <input
+              // display: 'none'은 접근성 문제 발생
+              style={{ opacity: '0', height: '0', width: '0' }}
+              id="upload-photo"
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={imageHandler}
+            />
+          </MotionUploadPhotoLabel>
+          {images && renderPhotos(images)}
+        </PhotoUploadArea>
+        {/* https://helloinyong.tistory.com/275 */}
 
         <MotionButtonArea
           variants={fadeIn}
@@ -141,12 +193,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  img {
-    width: 48px;
-    height: 48px;
-    padding: 3px;
-  }
-
   h3 {
     margin: 36px auto 0;
     width: 166px;
@@ -166,7 +212,7 @@ const ProductBox = styled.div`
   border: solid 1px ${({ theme }) => theme.gray1};
   margin: 16px 16px 0;
 
-  img {
+  .product__img {
     width: 48px;
     height: 48px;
     padding: 3px;
@@ -242,6 +288,23 @@ const CountCharacters = styled.div`
   }
 `;
 
+const PhotoUploadArea = styled(motion.div)`
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  overflow-x: auto;
+  margin: 35px 0 0 16px; // Text Area 아래 생기는 5px 영역 보정
+`;
+
+const PreviewPhoto = styled.img`
+  border-radius: 2px;
+  border: solid 1px ${({ theme }) => theme.gray1};
+  width: 133px;
+  height: 133px;
+  margin-left: 8px;
+`;
+
+// 임시 코드
 const MotionUploadPhoto = styled(motion.div)`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
@@ -252,6 +315,21 @@ const MotionUploadPhoto = styled(motion.div)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+`;
+
+const MotionUploadPhotoLabel = styled(motion.label)`
+  border-radius: 2px;
+  border: solid 1px ${({ theme }) => theme.gray1};
+  width: 133px;
+  height: 133px;
+  // Text Area 아래 생기는 5px 영역 보정
+  /* margin: 35px 0 0 16px;  */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const PopSpeechBubbleWrap = styled.div`
@@ -266,12 +344,6 @@ const MotionButtonArea = styled(motion.div)`
   margin: 0 16px;
 `;
 
-const starRotateUp = {
-  initial: { y: 0 },
-
-  animate: { y: -120, rotateY: 720 },
-};
-
 const stagger = {
   initial: {
     transition: {
@@ -285,6 +357,12 @@ const stagger = {
       staggerChildren: 0.07,
     },
   },
+};
+
+const starRotateUp = {
+  initial: { y: 0 },
+
+  animate: { y: -120, rotateY: 720 },
 };
 
 const textFadeOut = {
@@ -307,7 +385,7 @@ const textFadeOut = {
 const fadeIn = {
   initial: {
     opacity: 0,
-    scale: 1.2,
+    scale: 1.25,
     y: 0,
   },
 

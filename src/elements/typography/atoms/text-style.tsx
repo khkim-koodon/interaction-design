@@ -14,7 +14,7 @@ const TextStyle = ({
   marginTop,
 }: {
   type: any;
-  children: string;
+  children: JSX.Element | string;
   fontSize: string;
   weight: number;
   lineHeight?: string;
