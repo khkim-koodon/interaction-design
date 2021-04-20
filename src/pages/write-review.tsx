@@ -22,14 +22,16 @@ const WriteReview = () => {
   // S of upload Image
   const [images, setImages] = useState<string[]>([]);
   const imageHandler = (e: any) => {
-    const reader = new FileReader();
+    const fileArray = Array.from(e.target.files).map((file) =>
+      URL.createObjectURL(file)
+    );
 
     // console.log(e.target.files);
     // https://www.youtube.com/watch?v=iBonBC-ySgo
     if (e.target.files) {
-      const fileArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
+      // const fileArray = Array.from(e.target.files).map((file) =>
+      //   URL.createObjectURL(file)
+      // );
       // console.log(fileArray);
 
       // Array.cancat()
@@ -134,7 +136,8 @@ const WriteReview = () => {
             <P314px400 color="black">{String(images.length)}/5</P314px400>
             <input
               // display: 'none'은 접근성 문제 발생
-              style={{ opacity: '0', height: '0', width: '0' }}
+              // style={{ opacity: '0', height: '0', width: '0' }}
+              style={{ display: 'none' }}
               id="upload-photo"
               type="file"
               accept="image/*"
@@ -178,7 +181,7 @@ export default WriteReview;
 
 const Main = styled.main`
   overflow-x: hidden; // 애니메이션 작동 시 width 작아지는 문제 해결
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -186,12 +189,12 @@ const Main = styled.main`
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
-  min-height: 100vh;
+  /* height: 100%; */
+  /* min-height: 100vh; */
   max-width: 480px;
   box-shadow: 0px 0px 19px 0px rgb(0, 0, 0, 0.16);
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 
   h3 {
     margin: 36px auto 0;
@@ -289,11 +292,11 @@ const CountCharacters = styled.div`
 `;
 
 const PhotoUploadArea = styled(motion.div)`
-  display: flex;
-  /* align-items: center;
-  justify-content: center; */
-  overflow-x: auto;
-  margin: 35px 0 0 16px; // Text Area 아래 생기는 5px 영역 보정
+  /* display: flex; */
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-top: 35px; // Text Area 아래 생기는 5px 영역 보정
+  padding-left: 16px;
 `;
 
 const PreviewPhoto = styled.img`
@@ -302,26 +305,15 @@ const PreviewPhoto = styled.img`
   width: 133px;
   height: 133px;
   margin-left: 8px;
-`;
-
-// 임시 코드
-const MotionUploadPhoto = styled(motion.div)`
-  border-radius: 2px;
-  border: solid 1px ${({ theme }) => theme.gray1};
-  width: 133px;
-  height: 133px;
-  margin: 35px 0 0 16px; // Text Area 아래 생기는 5px 영역 보정
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  display: inline-block;
+  padding: 4px;
 `;
 
 const MotionUploadPhotoLabel = styled(motion.label)`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
-  width: 133px;
+  max-width: 133px;
+  padding: 0 40px; // 가로만 패딩 적용, 패딩이 없으면 가로로 작아짐. -> max-width와 함께 이용.
   height: 133px;
   // Text Area 아래 생기는 5px 영역 보정
   /* margin: 35px 0 0 16px;  */
@@ -329,6 +321,8 @@ const MotionUploadPhotoLabel = styled(motion.label)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  /* display: inline-block; */
   cursor: pointer;
 `;
 
