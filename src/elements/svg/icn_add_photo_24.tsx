@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
-const IconCamera24 = () => {
+const IconAddPhoto24 = () => {
   const themeContext = useContext(ThemeContext);
   const color: string = themeContext.black;
 
@@ -33,4 +33,4 @@ const IconCamera24 = () => {
     </svg>
   );
 };
-export default IconCamera24;
+export default IconAddPhoto24;

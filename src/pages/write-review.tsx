@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import IconStar48Fill from '../elements/svg/icon_star_48_fill';
+import IconStar48Fill from '../elements/svg/icn_star_48_fill';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import PopSpeechBubble from '../framer/pop-speech-bubble';
@@ -8,14 +8,15 @@ import H324px400 from '../elements/typography/h3-24px-400';
 import H616px700 from '../elements/typography/h6-16px-700';
 import P314px400 from '../elements/typography/p3-14px-400';
 import TextareaAutosize from 'react-textarea-autosize';
-import IconCamera24 from '../elements/svg/icon_camera_24';
+import IconAddPhoto24 from '../elements/svg/icn_add_photo_24';
 import BigBtn from '../components/big-btn';
+import IconTextClose24 from '../elements/svg/icn-textfield-x-24';
 
 const WriteReview = () => {
   const [starCount, setStarCount] = useState([0, 0, 0, 0, 0]); // 0: off 1: on
   const [starAnimation, setStarAnimation] = useState(false);
   const activeStarAnimation = () => {
-    setStarAnimation(!starAnimation); // production에서는 true로
+    setStarAnimation(true); // production에서는 true로
   };
   const [reviewText, setReviewText] = useState('');
 
@@ -26,14 +27,8 @@ const WriteReview = () => {
       URL.createObjectURL(file)
     );
 
-    // console.log(e.target.files);
     // https://www.youtube.com/watch?v=iBonBC-ySgo
     if (e.target.files) {
-      // const fileArray = Array.from(e.target.files).map((file) =>
-      //   URL.createObjectURL(file)
-      // );
-      // console.log(fileArray);
-
       // Array.cancat()
       // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
       images.length + fileArray.length < 6 // 사진은 5장까지만 올릴 수 있음.
@@ -44,10 +39,26 @@ const WriteReview = () => {
     }
   };
 
+  // 올라온 사진 배치
   const renderPhotos = (source: string[]) => {
     return source.map((photo: string) => {
-      return <PreviewPhoto src={photo} key={photo} />;
+      return (
+        <PreviewPhotoWrap key={photo}>
+          <PreviewPhoto src={photo} />
+          <button onClick={() => removePhoto(photo)}>
+            <IconTextClose24 />
+          </button>
+        </PreviewPhotoWrap>
+      );
     });
+  };
+
+  // 올린 사진 삭제
+  const removePhoto = (key: string) => {
+    const updateImages: string[] = images.filter(
+      (photo: string) => photo !== key
+    );
+    setImages(updateImages);
   };
 
   return (
@@ -118,7 +129,7 @@ const WriteReview = () => {
           animate={starAnimation ? 'animate' : 'initial'}
           style={{ display: starAnimation ? 'flex' : 'none' }}
         >
-          <IconCamera24 />
+          <IconAddPhoto24 />
           <P314px400 color="black">사진 올리기</P314px400>
           <P314px400 color="black">0/5</P314px400>
         </MotionUploadPhoto> */}
@@ -131,13 +142,12 @@ const WriteReview = () => {
           style={{ display: starAnimation ? 'flex' : 'none' }}
         >
           <MotionUploadPhotoLabel htmlFor="upload-photo">
-            <IconCamera24 />
+            <IconAddPhoto24 />
             <P314px400 color="black">사진 올리기</P314px400>
             <P314px400 color="black">{String(images.length)}/5</P314px400>
             <input
               // display: 'none'은 접근성 문제 발생
-              // style={{ opacity: '0', height: '0', width: '0' }}
-              style={{ display: 'none' }}
+              style={{ opacity: '0', height: '0', width: '0' }}
               id="upload-photo"
               type="file"
               accept="image/*"
@@ -145,7 +155,9 @@ const WriteReview = () => {
               onChange={imageHandler}
             />
           </MotionUploadPhotoLabel>
-          {images && renderPhotos(images)}
+          <PreviewPhotoTotalWrap>
+            {images && renderPhotos(images)}
+          </PreviewPhotoTotalWrap>
         </PhotoUploadArea>
         {/* https://helloinyong.tistory.com/275 */}
 
@@ -190,7 +202,7 @@ const Main = styled.main`
 const Container = styled.div`
   width: 100%;
   /* height: 100%; */
-  /* min-height: 100vh; */
+  min-height: 100vh;
   max-width: 480px;
   box-shadow: 0px 0px 19px 0px rgb(0, 0, 0, 0.16);
   /* display: flex;
@@ -293,10 +305,37 @@ const CountCharacters = styled.div`
 
 const PhotoUploadArea = styled(motion.div)`
   /* display: flex; */
+  /* flex-wrap: nowrap; */
   overflow-x: scroll;
-  white-space: nowrap;
+  overflow-y: hidden;
+  white-space: nowrap; // white-space: nowrap: 줄바꿈을 하지 않겠다
   margin-top: 35px; // Text Area 아래 생기는 5px 영역 보정
   padding-left: 16px;
+  padding-right: 16px;
+
+  /* S of scroll 숨김 */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  /* E of scroll 숨김 */
+`;
+
+const PreviewPhotoTotalWrap = styled.div`
+  padding-right: 16px; // 이미지 wrap을 씌워줘야 작동
+  display: flex;
+`;
+
+const PreviewPhotoWrap = styled.div`
+  position: relative; // x(delete) - position: absolute 버튼 위치 조정 위해 필요
+
+  svg {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
 `;
 
 const PreviewPhoto = styled.img`
@@ -306,7 +345,7 @@ const PreviewPhoto = styled.img`
   height: 133px;
   margin-left: 8px;
   display: inline-block;
-  padding: 4px;
+  object-fit: cover; // 비율에 맞지 않아도 이미지 확대해 박스를 채움.
 `;
 
 const MotionUploadPhotoLabel = styled(motion.label)`
