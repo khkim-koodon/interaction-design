@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import IconStar48Fill from '../elements/svg/icn_star_48_fill';
 import { motion } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PopSpeechBubble from '../framer/pop-speech-bubble';
 import NavigationBar from '../components/nav-bar';
 import H324px400 from '../elements/typography/h3-24px-400';
@@ -11,7 +11,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import IconAddPhoto24 from '../elements/svg/icn_add_photo_24';
 import BigBtn from '../components/big-btn';
 import IconTextClose24 from '../elements/svg/icn-textfield-x-24';
-import { useWindowWidth } from '../lib/hook/useWindowWidth';
 
 // https://github.com/microsoft/TypeScript/issues/31816
 // amatiasq's의 Comment
@@ -30,7 +29,7 @@ const WriteReview = () => {
   const [validation, setValidation] = useState(false); // 버튼 disabled + 상태 변경
 
   useEffect(() => {
-    const starCountSum = starCount.reduce((a, b) => a + b);
+    const starCountSum: number = starCount.reduce((a, b) => a + b);
     const reviewTextValidation: boolean = reviewText.length > 19;
     const imagesValidation: boolean = images.length > 0;
 
@@ -46,28 +45,6 @@ const WriteReview = () => {
     setStarAnimation(true); // production에서는 true로
   };
   // E of Star Animation
-
-  // S of Preview Photo Width & Height
-  const widthRef = useRef<HTMLElement>(null);
-  const [width, setWidth] = useState(useWindowWidth());
-  const [previewPhotoWidth, setPreviewPhotoWidth] = useState<
-    number | undefined
-  >(0);
-
-  useEffect(() => {
-    width > 400 && setWidth(400); // 가로 길이가 너무 길어지면 사진 크기가 너무 커져서 주는 사진 가로 길이 제한
-  }, []);
-
-  const setWidthHeight = () => {
-    width && setPreviewPhotoWidth((width - 32) / 1.618 / 1.618); // 별 누르면 '사진 올리기' 버튼 및 '미리 보기 사진' 가로 세로 길이 계산
-  };
-  // E of Preview Photo Width & Height
-
-  // 별 onClick Function, 별 누르면 가로 세로 길이 지정, 별 애니메이션 작동
-  const tabStars = () => {
-    setWidthHeight();
-    activeStarAnimation();
-  };
 
   // S of upload Image
   const imageHandler = (e: Event<HTMLInputElement>) => {
@@ -90,7 +67,7 @@ const WriteReview = () => {
     return source.map((photo: string) => {
       return (
         <PreviewPhotoWrap key={photo}>
-          <PreviewPhoto src={photo} previewPhotoWidth={previewPhotoWidth} />
+          <PreviewPhoto src={photo} />
           <button onClick={() => removePhoto(photo)}>
             <IconTextClose24 />
           </button>
@@ -111,48 +88,24 @@ const WriteReview = () => {
   // 최초 리뷰 등록, 리뷰 수정에서 모두 '사진 올리기' 버튼을 눌렀을 때 최초 1회만 보여줌
   const [seePhotoGuide, setSeePhotoGuide] = useState(false);
 
-  const seePhotoGuideCheck = () => {
+  const seePhotoGuideCheck = (e: React.MouseEvent<HTMLInputElement>) => {
+    if (images.length >= 5) {
+      e.preventDefault();
+      alert('사진은 5장까지만 올릴 수 있어요 😂');
+    }
+
     !seePhotoGuide &&
       alert(
         '직접 촬영하지 않은 캡처 이미지 등을 올리시면 포인트가 지급되지 않아요 😭 구매하신 상품의 전체 모습이 나온 사진을 올려주세요! 📸 '
       );
     setSeePhotoGuide(true);
   };
-
-  const inputReturn = () => {
-    if (images.length < 5) {
-      return (
-        <>
-          <input
-            // display: 'none'은 접근성 문제 발생
-            style={{ opacity: '0', height: '0', width: '0' }}
-            id="upload-photo"
-            type="file"
-            accept="image/*"
-            multiple
-            onClick={seePhotoGuideCheck}
-            onChange={imageHandler}
-          />
-        </>
-      );
-    } else if (images.length >= 5) {
-      return (
-        <>
-          <button
-            style={{ opacity: '0', height: '0', width: '0' }}
-            id="upload-photo"
-            onClick={() => alert('사진은 5장까지만 올릴 수 있어요 😂')}
-          />
-        </>
-      );
-    }
-  };
   // E of upload Image
 
   return (
     <>
       <NavigationBar leftAction="back" title="포토 리뷰 작성" />
-      <Main ref={widthRef}>
+      <Main>
         <Container>
           <ProductBox>
             <img className="product__img" src="/images/review.jpg" />
@@ -178,7 +131,7 @@ const WriteReview = () => {
           >
             {starCount.map((_, idx) => (
               <MotionStarButton
-                onClick={() => tabStars()}
+                onClick={() => activeStarAnimation()}
                 key={idx}
                 variants={starRotateUp}
               >
@@ -222,16 +175,20 @@ const WriteReview = () => {
             animate={starAnimation ? 'animate' : 'initial'}
             style={{ display: starAnimation ? 'flex' : 'none' }}
           >
-            <MotionUploadPhotoLabel
-              htmlFor="upload-photo"
-              previewPhotoWidth={previewPhotoWidth}
-            >
+            <MotionUploadPhotoLabel htmlFor="upload-photo">
               <IconAddPhoto24 />
               <P314px400 color="black">사진 올리기</P314px400>
               <P314px400 color="black">{String(images.length)}/5</P314px400>
-              {/* <button onClick={() => images.length > 4 && alert('hi')}> */}
-              {inputReturn()}
-              {/* </button> */}
+              <input
+                // display: 'none'은 접근성 문제 발생
+                style={{ opacity: '0', height: '0', width: '0' }}
+                id="upload-photo"
+                type="file"
+                accept="image/*"
+                multiple
+                onClick={seePhotoGuideCheck}
+                onChange={imageHandler}
+              />
             </MotionUploadPhotoLabel>
             <PreviewPhotoTotalWrap>
               {images && renderPhotos(images)}
@@ -415,31 +372,41 @@ const PreviewPhotoWrap = styled.div`
   }
 `;
 
-type previewPhotoWidthType = {
-  previewPhotoWidth?: number;
-};
-
-const PreviewPhoto = styled.img<previewPhotoWidthType>`
+const PreviewPhoto = styled.img`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
-  width: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
-  height: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
   margin-left: 8px;
   display: inline-block;
   object-fit: cover; // 비율에 맞지 않아도 이미지 확대해 박스를 채움.
+
+  // 바뀌는 속성
+  max-width: 150px;
+  height: 150px;
+
+  @media all and (max-width: 400px) {
+    width: calc((100vw - 32px) / 1.618 / 1.618);
+    height: calc((100vw - 32px) / 1.618 / 1.618);
+  }
 `;
 
-const MotionUploadPhotoLabel = styled(motion.label)<previewPhotoWidthType>`
+const MotionUploadPhotoLabel = styled(motion.label)`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
-  max-width: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
-  padding: 0 40px; // 가로만 패딩 적용, 패딩이 없으면 가로로 작아짐. -> max-width와 함께 이용.
-  height: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
+  padding: 0 41px; // 가로만 패딩 적용, 패딩이 없으면 가로로 작아짐. -> max-width와 함께 이용.
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  // 바뀌는 속성
+  max-width: 150px;
+  height: 150px;
+
+  @media all and (max-width: 400px) {
+    max-width: calc((100vw - 32px) / 1.618 / 1.618);
+    height: calc((100vw - 32px) / 1.618 / 1.618);
+  }
 `;
 
 const PopSpeechBubbleWrap = styled.div`
