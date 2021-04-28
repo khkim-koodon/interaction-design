@@ -5,13 +5,19 @@ const BigBtn = ({
   text,
   color,
   marginTop,
+  validation,
 }: {
   text: string;
   color: string;
   marginTop?: string;
+  validation?: boolean;
 }) => {
   return (
-    <Button marginTop={marginTop}>
+    <Button
+      marginTop={marginTop}
+      validation={validation}
+      disabled={!validation}
+    >
       <P118px400 color={color}>{text}</P118px400>
     </Button>
   );
@@ -19,12 +25,20 @@ const BigBtn = ({
 
 export default BigBtn;
 
-const Button = styled.button<{ marginTop?: string }>`
+const Button = styled.button<{ marginTop?: string; validation?: boolean }>`
   width: 100%;
   height: 48px;
-  background-color: ${({ theme }) => theme.primary40};
+  background-color: ${({ theme, validation }) =>
+    validation ? theme.primary : theme.primary40};
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: ${({ marginTop }) => marginTop};
+  -webkit-transition: background-color 0.23s ease-in-out;
+  transition: background-color 0.23s ease-in-out;
+
+  p {
+    -webkit-transition: color 0.23s ease-in-out, font-weight 0.23s ease-in-out;
+    transition: color 0.23s ease-in-out, font-weight 0.23s ease-in-out;
+  }
 `;

@@ -1,12 +1,14 @@
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
+import { motion } from 'framer-motion';
 
 const IconTextClose24 = () => {
   const themeContext = useContext(ThemeContext);
   const color: string = themeContext.black;
 
   return (
-    <svg
+    <motion.svg
+      whileTap={{ opacity: 0.4 }}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -20,7 +22,7 @@ const IconTextClose24 = () => {
           transform="translate(0 .5)"
         />
       </g>
-    </svg>
+    </motion.svg>
   );
 };
 

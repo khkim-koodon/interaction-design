@@ -20,8 +20,34 @@ interface Event<T = EventTarget> {
 }
 
 const WriteReview = () => {
+  // S of 서버로 전송할 데이터
   const [starCount, setStarCount] = useState([0, 0, 0, 0, 0]); // 0: off 1: on
+  const [reviewText, setReviewText] = useState('');
+  const [images, setImages] = useState<string[]>([]);
+  // E of 서버로 전송할 데이터
+
+  // S of Validation
+  const [validation, setValidation] = useState(false); // 버튼 disabled + 상태 변경
+
+  useEffect(() => {
+    const starCountSum = starCount.reduce((a, b) => a + b);
+    const reviewTextValidation: boolean = reviewText.length > 19;
+    const imagesValidation: boolean = images.length > 0;
+
+    starCountSum > 0 && reviewTextValidation && imagesValidation
+      ? setValidation(true)
+      : setValidation(false);
+  }, [reviewText, images]);
+  // E of Validation
+
+  // S of Star Animation
   const [starAnimation, setStarAnimation] = useState(false);
+  const activeStarAnimation = () => {
+    setStarAnimation(true); // production에서는 true로
+  };
+  // E of Star Animation
+
+  // S of Preview Photo Width & Height
   const widthRef = useRef<HTMLElement>(null);
   const [width, setWidth] = useState(useWindowWidth());
   const [previewPhotoWidth, setPreviewPhotoWidth] = useState<
@@ -29,20 +55,21 @@ const WriteReview = () => {
   >(0);
 
   useEffect(() => {
-    width > 380 && setWidth(380); // 가로 길이가 너무 길어지면 사진 크기가 너무 커져서 주는 사진 가로 길이 제한
+    width > 400 && setWidth(400); // 가로 길이가 너무 길어지면 사진 크기가 너무 커져서 주는 사진 가로 길이 제한
   }, []);
 
-  const activeStarAnimation = () => {
-    setStarAnimation(!starAnimation); // production에서는 true로
+  const setWidthHeight = () => {
     width && setPreviewPhotoWidth((width - 32) / 1.618 / 1.618); // 별 누르면 '사진 올리기' 버튼 및 '미리 보기 사진' 가로 세로 길이 계산
   };
-  const [reviewText, setReviewText] = useState('');
+  // E of Preview Photo Width & Height
 
-  console.log('width', width);
-  console.log('previewPhotoWidth', previewPhotoWidth);
+  // 별 onClick Function, 별 누르면 가로 세로 길이 지정, 별 애니메이션 작동
+  const tabStars = () => {
+    setWidthHeight();
+    activeStarAnimation();
+  };
 
   // S of upload Image
-  const [images, setImages] = useState<string[]>([]);
   const imageHandler = (e: Event<HTMLInputElement>) => {
     const fileArray = Array.from(e.target.files as any).map((file) =>
       URL.createObjectURL(file)
@@ -151,7 +178,7 @@ const WriteReview = () => {
           >
             {starCount.map((_, idx) => (
               <MotionStarButton
-                onClick={() => activeStarAnimation()}
+                onClick={() => tabStars()}
                 key={idx}
                 variants={starRotateUp}
               >
@@ -223,7 +250,12 @@ const WriteReview = () => {
             <P314px400 color="gray2" marginTop="48px">
               글과 사진이 모두 있어야 리뷰를 등록할 수 있어요!
             </P314px400>
-            <BigBtn text="포토 리뷰 등록" color="white" marginTop="16px" />
+            <BigBtn
+              text="포토 리뷰 등록"
+              color="white"
+              marginTop="16px"
+              validation={validation}
+            />
           </MotionButtonArea>
           {/* E of Bottom Button Area */}
 
