@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import IconStar48Fill from '../elements/svg/icn_star_48_fill';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import PopSpeechBubble from '../framer/pop-speech-bubble';
 import NavigationBar from '../components/nav-bar';
 import H324px400 from '../elements/typography/h3-24px-400';
@@ -11,26 +11,45 @@ import TextareaAutosize from 'react-textarea-autosize';
 import IconAddPhoto24 from '../elements/svg/icn_add_photo_24';
 import BigBtn from '../components/big-btn';
 import IconTextClose24 from '../elements/svg/icn-textfield-x-24';
+import { useWindowWidth } from '../lib/hook/useWindowWidth';
+
+// https://github.com/microsoft/TypeScript/issues/31816
+// amatiasq's의 Comment
+interface Event<T = EventTarget> {
+  target: T;
+}
 
 const WriteReview = () => {
   const [starCount, setStarCount] = useState([0, 0, 0, 0, 0]); // 0: off 1: on
   const [starAnimation, setStarAnimation] = useState(false);
+  const widthRef = useRef<HTMLElement>(null);
+  const [width, setWidth] = useState(useWindowWidth());
+  const [previewPhotoWidth, setPreviewPhotoWidth] = useState<
+    number | undefined
+  >(0);
+
+  useEffect(() => {
+    width > 380 && setWidth(380); // 가로 길이가 너무 길어지면 사진 크기가 너무 커져서 주는 사진 가로 길이 제한
+  }, []);
+
   const activeStarAnimation = () => {
     setStarAnimation(!starAnimation); // production에서는 true로
+    width && setPreviewPhotoWidth((width - 32) / 1.618 / 1.618); // 별 누르면 '사진 올리기' 버튼 및 '미리 보기 사진' 가로 세로 길이 계산
   };
   const [reviewText, setReviewText] = useState('');
 
+  console.log('width', width);
+  console.log('previewPhotoWidth', previewPhotoWidth);
+
   // S of upload Image
   const [images, setImages] = useState<string[]>([]);
-  const imageHandler = (e: any) => {
-    const fileArray = Array.from(e.target.files).map((file) =>
+  const imageHandler = (e: Event<HTMLInputElement>) => {
+    const fileArray = Array.from(e.target.files as any).map((file) =>
       URL.createObjectURL(file)
     );
 
     // https://www.youtube.com/watch?v=iBonBC-ySgo
     if (e.target.files) {
-      // Array.cancat()
-      // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
       images.length + fileArray.length < 6 // 사진은 5장까지만 올릴 수 있음.
         ? setImages((prevImages: string[]) => prevImages.concat(fileArray))
         : alert('사진은 5장까지만 올릴 수 있어요 😂');
@@ -44,7 +63,7 @@ const WriteReview = () => {
     return source.map((photo: string) => {
       return (
         <PreviewPhotoWrap key={photo}>
-          <PreviewPhoto src={photo} />
+          <PreviewPhoto src={photo} previewPhotoWidth={previewPhotoWidth} />
           <button onClick={() => removePhoto(photo)}>
             <IconTextClose24 />
           </button>
@@ -56,15 +75,57 @@ const WriteReview = () => {
   // 올린 사진 삭제
   const removePhoto = (key: string) => {
     const updateImages: string[] = images.filter(
-      (photo: string) => photo !== key
+      (image: string) => image !== key
     );
     setImages(updateImages);
   };
 
+  // 사진 가이드 모달 보았는지 체크
+  // 최초 리뷰 등록, 리뷰 수정에서 모두 '사진 올리기' 버튼을 눌렀을 때 최초 1회만 보여줌
+  const [seePhotoGuide, setSeePhotoGuide] = useState(false);
+
+  const seePhotoGuideCheck = () => {
+    !seePhotoGuide &&
+      alert(
+        '직접 촬영하지 않은 캡처 이미지 등을 올리시면 포인트가 지급되지 않아요 😭 구매하신 상품의 전체 모습이 나온 사진을 올려주세요! 📸 '
+      );
+    setSeePhotoGuide(true);
+  };
+
+  const inputReturn = () => {
+    if (images.length < 5) {
+      return (
+        <>
+          <input
+            // display: 'none'은 접근성 문제 발생
+            style={{ opacity: '0', height: '0', width: '0' }}
+            id="upload-photo"
+            type="file"
+            accept="image/*"
+            multiple
+            onClick={seePhotoGuideCheck}
+            onChange={imageHandler}
+          />
+        </>
+      );
+    } else if (images.length >= 5) {
+      return (
+        <>
+          <button
+            style={{ opacity: '0', height: '0', width: '0' }}
+            id="upload-photo"
+            onClick={() => alert('사진은 5장까지만 올릴 수 있어요 😂')}
+          />
+        </>
+      );
+    }
+  };
+  // E of upload Image
+
   return (
     <>
       <NavigationBar leftAction="back" title="포토 리뷰 작성" />
-      <Main>
+      <Main ref={widthRef}>
         <Container>
           <ProductBox>
             <img className="product__img" src="/images/review.jpg" />
@@ -104,6 +165,7 @@ const WriteReview = () => {
           </MotionStarContainer>
           {/* E of Star Area */}
 
+          {/* S of Textfield Area */}
           <MotionTextfield
             variants={fadeIn}
             initial={false}
@@ -118,11 +180,14 @@ const WriteReview = () => {
               maxLength={499}
             />
             <CountCharacters>
-              <P314px400 color="gray2">{String(reviewText.length)}</P314px400>
-              <P314px400 color="gray2">/500</P314px400>
+              <P314px400 color="gray2">
+                {String(reviewText.length)}/500
+              </P314px400>
             </CountCharacters>
           </MotionTextfield>
+          {/* E of Textfield Area */}
 
+          {/* S of PhotoUpload Area */}
           {/* https://github.com/facebook/react/issues/310 */}
           <PhotoUploadArea
             variants={fadeIn}
@@ -130,26 +195,25 @@ const WriteReview = () => {
             animate={starAnimation ? 'animate' : 'initial'}
             style={{ display: starAnimation ? 'flex' : 'none' }}
           >
-            <MotionUploadPhotoLabel htmlFor="upload-photo">
+            <MotionUploadPhotoLabel
+              htmlFor="upload-photo"
+              previewPhotoWidth={previewPhotoWidth}
+            >
               <IconAddPhoto24 />
               <P314px400 color="black">사진 올리기</P314px400>
               <P314px400 color="black">{String(images.length)}/5</P314px400>
-              <input
-                // display: 'none'은 접근성 문제 발생
-                style={{ opacity: '0', height: '0', width: '0' }}
-                id="upload-photo"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={imageHandler}
-              />
+              {/* <button onClick={() => images.length > 4 && alert('hi')}> */}
+              {inputReturn()}
+              {/* </button> */}
             </MotionUploadPhotoLabel>
             <PreviewPhotoTotalWrap>
               {images && renderPhotos(images)}
             </PreviewPhotoTotalWrap>
           </PhotoUploadArea>
           {/* https://helloinyong.tistory.com/275 */}
+          {/* E of PhotoUpload Area */}
 
+          {/* S of Bottom Button Area */}
           <MotionButtonArea
             variants={fadeIn}
             initial={false}
@@ -161,6 +225,7 @@ const WriteReview = () => {
             </P314px400>
             <BigBtn text="포토 리뷰 등록" color="white" marginTop="16px" />
           </MotionButtonArea>
+          {/* E of Bottom Button Area */}
 
           <PopSpeechBubbleWrap
             style={{ display: starAnimation ? 'none' : 'block' }}
@@ -279,7 +344,7 @@ const MultiLineTextField = styled(TextareaAutosize)`
 
 const CountCharacters = styled.div`
   display: flex;
-  margin-left: auto; //오른쪽으로
+  margin-left: auto; //오른쪽 정렬
   text-align: right;
   margin-top: 4px;
   height: 20px;
@@ -289,7 +354,7 @@ const PhotoUploadArea = styled(motion.div)`
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap; // white-space: nowrap: 줄바꿈을 하지 않겠다
-  margin-top: 36px;
+  margin-top: 16px;
   padding-left: 16px;
   display: flex;
 
@@ -318,22 +383,26 @@ const PreviewPhotoWrap = styled.div`
   }
 `;
 
-const PreviewPhoto = styled.img`
+type previewPhotoWidthType = {
+  previewPhotoWidth?: number;
+};
+
+const PreviewPhoto = styled.img<previewPhotoWidthType>`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
-  width: 133px;
-  height: 133px;
+  width: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
+  height: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
   margin-left: 8px;
   display: inline-block;
   object-fit: cover; // 비율에 맞지 않아도 이미지 확대해 박스를 채움.
 `;
 
-const MotionUploadPhotoLabel = styled(motion.label)`
+const MotionUploadPhotoLabel = styled(motion.label)<previewPhotoWidthType>`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
-  max-width: 133px;
+  max-width: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
   padding: 0 40px; // 가로만 패딩 적용, 패딩이 없으면 가로로 작아짐. -> max-width와 함께 이용.
-  height: 133px;
+  height: ${({ previewPhotoWidth }) => previewPhotoWidth}px;
   display: flex;
   flex-direction: column;
   justify-content: center;
