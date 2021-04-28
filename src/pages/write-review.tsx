@@ -16,7 +16,7 @@ const WriteReview = () => {
   const [starCount, setStarCount] = useState([0, 0, 0, 0, 0]); // 0: off 1: on
   const [starAnimation, setStarAnimation] = useState(false);
   const activeStarAnimation = () => {
-    setStarAnimation(true); // production에서는 true로
+    setStarAnimation(!starAnimation); // production에서는 true로
   };
   const [reviewText, setReviewText] = useState('');
 
@@ -39,7 +39,7 @@ const WriteReview = () => {
     }
   };
 
-  // 올라온 사진 배치
+  // 올린 사진 배치
   const renderPhotos = (source: string[]) => {
     return source.map((photo: string) => {
       return (
@@ -62,130 +62,120 @@ const WriteReview = () => {
   };
 
   return (
-    <Main>
-      <Container>
-        <NavigationBar leftAction="back" title="포토 리뷰 작성" />
+    <>
+      <NavigationBar leftAction="back" title="포토 리뷰 작성" />
+      <Main>
+        <Container>
+          <ProductBox>
+            <img className="product__img" src="/images/review.jpg" />
+            <ProductName>
+              <H616px700 color="black">브랜드명</H616px700>
+              <P314px400 color="gray4">상품 이름이 들어갑니다</P314px400>
+            </ProductName>
+          </ProductBox>
 
-        <ProductBox>
-          <img className="product__img" src="/images/review.jpg" />
-          <ProductName>
-            <H616px700 color="black">브랜드명</H616px700>
-            <P314px400 color="gray4">상품 이름이 들어갑니다</P314px400>
-          </ProductName>
-        </ProductBox>
+          <motion.div
+            variants={textFadeOut}
+            initial={false}
+            animate={starAnimation ? 'animate' : 'initial'}
+          >
+            <H324px400 color="black">쿠돈 구매 경험은 어떠셨어요?</H324px400>
+          </motion.div>
 
-        <motion.div
-          variants={textFadeOut}
-          initial={false}
-          animate={starAnimation ? 'animate' : 'initial'}
-        >
-          <H324px400 color="black">쿠돈 구매 경험은 어떠셨어요?</H324px400>
-        </motion.div>
+          {/* S of Star Area */}
+          <MotionStarContainer
+            variants={stagger}
+            initial="initial"
+            animate={starAnimation ? 'animate' : 'initial'}
+          >
+            {starCount.map((_, idx) => (
+              <MotionStarButton
+                onClick={() => activeStarAnimation()}
+                key={idx}
+                variants={starRotateUp}
+              >
+                <IconStar48Fill
+                  idx={idx}
+                  starCount={starCount}
+                  setStarCount={setStarCount}
+                />
+              </MotionStarButton>
+            ))}
+          </MotionStarContainer>
+          {/* E of Star Area */}
 
-        {/* S of Star Area */}
-        <MotionStarContainer
-          variants={stagger}
-          initial="initial"
-          animate={starAnimation ? 'animate' : 'initial'}
-        >
-          {starCount.map((_, idx) => (
-            <motion.button
-              onClick={() => activeStarAnimation()}
-              key={idx}
-              variants={starRotateUp}
-            >
-              <IconStar48Fill
-                idx={idx}
-                starCount={starCount}
-                setStarCount={setStarCount}
-              />
-            </motion.button>
-          ))}
-        </MotionStarContainer>
-        {/* E of Star Area */}
-
-        <MotionTextfield
-          variants={fadeIn}
-          initial={false}
-          animate={starAnimation ? 'animate' : 'initial'}
-          style={{ display: starAnimation ? 'block' : 'none' }}
-        >
-          <MultiLineTextField
-            onChange={(e) => setReviewText(e.target.value)}
-            placeholder="쿠돈 구매 경험을 남겨주세요!(최소 20자)"
-            minRows={3}
-            minLength={19}
-            maxLength={499}
-          />
-          <CountCharacters>
-            <P314px400 color="gray2">{String(reviewText.length)}</P314px400>
-            <P314px400 color="gray2">/500</P314px400>
-          </CountCharacters>
-        </MotionTextfield>
-
-        {/* <MotionUploadPhoto
-          variants={fadeIn}
-          initial={false}
-          animate={starAnimation ? 'animate' : 'initial'}
-          style={{ display: starAnimation ? 'flex' : 'none' }}
-        >
-          <IconAddPhoto24 />
-          <P314px400 color="black">사진 올리기</P314px400>
-          <P314px400 color="black">0/5</P314px400>
-        </MotionUploadPhoto> */}
-
-        {/* https://github.com/facebook/react/issues/310 */}
-        <PhotoUploadArea
-          variants={fadeIn}
-          initial={false}
-          animate={starAnimation ? 'animate' : 'initial'}
-          style={{ display: starAnimation ? 'flex' : 'none' }}
-        >
-          <MotionUploadPhotoLabel htmlFor="upload-photo">
-            <IconAddPhoto24 />
-            <P314px400 color="black">사진 올리기</P314px400>
-            <P314px400 color="black">{String(images.length)}/5</P314px400>
-            <input
-              // display: 'none'은 접근성 문제 발생
-              style={{ opacity: '0', height: '0', width: '0' }}
-              id="upload-photo"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={imageHandler}
+          <MotionTextfield
+            variants={fadeIn}
+            initial={false}
+            animate={starAnimation ? 'animate' : 'initial'}
+            style={{ display: starAnimation ? 'flex' : 'none' }}
+          >
+            <MultiLineTextField
+              onChange={(e) => setReviewText(e.target.value)}
+              placeholder="쿠돈 구매 경험을 남겨주세요!(최소 20자)"
+              minRows={3}
+              minLength={19}
+              maxLength={499}
             />
-          </MotionUploadPhotoLabel>
-          <PreviewPhotoTotalWrap>
-            {images && renderPhotos(images)}
-          </PreviewPhotoTotalWrap>
-        </PhotoUploadArea>
-        {/* https://helloinyong.tistory.com/275 */}
+            <CountCharacters>
+              <P314px400 color="gray2">{String(reviewText.length)}</P314px400>
+              <P314px400 color="gray2">/500</P314px400>
+            </CountCharacters>
+          </MotionTextfield>
 
-        <MotionButtonArea
-          variants={fadeIn}
-          initial={false}
-          animate={starAnimation ? 'animate' : 'initial'}
-          style={{ display: starAnimation ? 'flex' : 'none' }}
-        >
-          <P314px400 color="gray2" marginTop="48px">
-            글과 사진이 모두 있어야 리뷰를 등록할 수 있어요!
-          </P314px400>
-          <BigBtn text="포토 리뷰 등록" color="white" marginTop="16px" />
-        </MotionButtonArea>
+          {/* https://github.com/facebook/react/issues/310 */}
+          <PhotoUploadArea
+            variants={fadeIn}
+            initial={false}
+            animate={starAnimation ? 'animate' : 'initial'}
+            style={{ display: starAnimation ? 'flex' : 'none' }}
+          >
+            <MotionUploadPhotoLabel htmlFor="upload-photo">
+              <IconAddPhoto24 />
+              <P314px400 color="black">사진 올리기</P314px400>
+              <P314px400 color="black">{String(images.length)}/5</P314px400>
+              <input
+                // display: 'none'은 접근성 문제 발생
+                style={{ opacity: '0', height: '0', width: '0' }}
+                id="upload-photo"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={imageHandler}
+              />
+            </MotionUploadPhotoLabel>
+            <PreviewPhotoTotalWrap>
+              {images && renderPhotos(images)}
+            </PreviewPhotoTotalWrap>
+          </PhotoUploadArea>
+          {/* https://helloinyong.tistory.com/275 */}
 
-        <PopSpeechBubbleWrap
-          style={{ display: starAnimation ? 'none' : 'block' }}
-        >
-          <PopSpeechBubble
-            text="📷 포토 리뷰 작성 시 포인트 10,000원 지급"
-            backgroundColor="primary"
-            duration={2}
-            className=""
-            trianglePosition="top"
-          />
-        </PopSpeechBubbleWrap>
-      </Container>
-    </Main>
+          <MotionButtonArea
+            variants={fadeIn}
+            initial={false}
+            animate={starAnimation ? 'animate' : 'initial'}
+            style={{ display: starAnimation ? 'flex' : 'none' }}
+          >
+            <P314px400 color="gray2" marginTop="48px">
+              글과 사진이 모두 있어야 리뷰를 등록할 수 있어요!
+            </P314px400>
+            <BigBtn text="포토 리뷰 등록" color="white" marginTop="16px" />
+          </MotionButtonArea>
+
+          <PopSpeechBubbleWrap
+            style={{ display: starAnimation ? 'none' : 'block' }}
+          >
+            <PopSpeechBubble
+              text="📷 포토 리뷰 작성 시 포인트 10,000원 지급"
+              backgroundColor="primary"
+              duration={2}
+              className=""
+              trianglePosition="top"
+            />
+          </PopSpeechBubbleWrap>
+        </Container>
+      </Main>
+    </>
   );
 };
 
@@ -193,21 +183,13 @@ export default WriteReview;
 
 const Main = styled.main`
   overflow-x: hidden; // 애니메이션 작동 시 width 작아지는 문제 해결
-  /* overflow-y: auto; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  box-shadow: 0px 0px 19px 0px rgb(0, 0, 0, 0.16);
 `;
 
 const Container = styled.div`
-  width: 100%;
-  /* height: 100%; */
-  min-height: 100vh;
-  max-width: 480px;
-  box-shadow: 0px 0px 19px 0px rgb(0, 0, 0, 0.16);
-  /* display: flex;
-  flex-direction: column; */
-
   h3 {
     margin: 36px auto 0;
     width: 166px;
@@ -225,7 +207,7 @@ const ProductBox = styled.div`
   padding: 24px;
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
-  margin: 16px 16px 0;
+  margin: 64px 16px 0; // 48px + 16px
 
   .product__img {
     width: 48px;
@@ -255,18 +237,30 @@ const MotionStarContainer = styled(motion.div)`
   }
 `;
 
+const MotionStarButton = styled(motion.button)`
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const MotionTextfield = styled(motion.div)`
   margin: 36px 16px 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 const MultiLineTextField = styled(TextareaAutosize)`
+  max-width: 480px;
+  outline-style: none;
   background-color: ${({ theme }) => theme.gray1__50};
-  border: transparent;
+  border: transparent !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
   border-radius: 2px;
   resize: none; // 늘이고 줄이는 기능 없애기
-  width: 100%;
+  display: flex; // flex를 넣으면 하단 이상한 마진이 사라짐.
 
   /* text */
+  font-family: Spoqa Han Sans, sans-serif;
   caret-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.black};
   font-weight: 400;
@@ -285,33 +279,19 @@ const MultiLineTextField = styled(TextareaAutosize)`
 
 const CountCharacters = styled.div`
   display: flex;
-  align-items: end;
+  margin-left: auto; //오른쪽으로
   text-align: right;
-  position: relative;
-  margin-top: -1px;
-
-  p:nth-child(1) {
-    position: absolute;
-    right: 31px; // 47 - 16
-    /* top: 4px; */
-  }
-
-  p:nth-child(2) {
-    position: absolute;
-    right: 0;
-    /* top: 4px; */
-  }
+  margin-top: 4px;
+  height: 20px;
 `;
 
 const PhotoUploadArea = styled(motion.div)`
-  /* display: flex; */
-  /* flex-wrap: nowrap; */
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap; // white-space: nowrap: 줄바꿈을 하지 않겠다
-  margin-top: 35px; // Text Area 아래 생기는 5px 영역 보정
+  margin-top: 36px;
   padding-left: 16px;
-  padding-right: 16px;
+  display: flex;
 
   /* S of scroll 숨김 */
   -ms-overflow-style: none;
@@ -325,7 +305,7 @@ const PhotoUploadArea = styled(motion.div)`
 
 const PreviewPhotoTotalWrap = styled.div`
   padding-right: 16px; // 이미지 wrap을 씌워줘야 작동
-  display: flex;
+  display: flex; // 가로 정렬
 `;
 
 const PreviewPhotoWrap = styled.div`
@@ -354,14 +334,10 @@ const MotionUploadPhotoLabel = styled(motion.label)`
   max-width: 133px;
   padding: 0 40px; // 가로만 패딩 적용, 패딩이 없으면 가로로 작아짐. -> max-width와 함께 이용.
   height: 133px;
-  // Text Area 아래 생기는 5px 영역 보정
-  /* margin: 35px 0 0 16px;  */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  /* display: inline-block; */
   cursor: pointer;
 `;
 
@@ -377,6 +353,7 @@ const MotionButtonArea = styled(motion.div)`
   margin: 0 16px;
 `;
 
+// Framer-motion Variants
 const stagger = {
   initial: {
     transition: {

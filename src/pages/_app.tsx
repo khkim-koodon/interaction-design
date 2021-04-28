@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+// import '../styles/globals.css';
 import '../styles/font.css';
 import GlobalColors, { lightTheme } from '../styles/theme';
 import { ThemeProvider } from 'styled-components';

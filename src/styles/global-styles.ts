@@ -88,9 +88,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     border: 0;
     font-size: 18px;
-    line-height: 24px;
+    line-height:24px;
     vertical-align: baseline;
     box-sizing: border-box;
+    
   }
   /* HTML5 display-role reset for older browsers */
   article,
@@ -107,14 +108,14 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   input{
-    caret-color: #78A353;
+    caret-color:#78A353;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     font-family: Spoqa Han Sans,sans-serif;
   }
   a{
-    text-decoration: none;
+    text-decoration:none;
   }
 
   ol,
@@ -145,10 +146,10 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
-  html, body {
+  html ,body {
     -webkit-tap-highlight-color:transparent;
-    color: #363636;
-    font-family: Spoqa Han Sans, sans-serif;
+    color:#363636;
+    font-family: Spoqa Han Sans,sans-serif;
     -webkit-font-smoothing: antialiased;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -160,6 +161,52 @@ const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
   }
 
+  /* body.font-unloaded{
+      letter-spacing: 0.82px;
+      word-spacing: -1.2px;
+  } */
+  
+
+  h1{
+    font-weight: 700;
+    font-size: 72px;
+    line-height:107px;
+  }
+  h2{
+    font-weight: 700;
+    font-size: 27px;
+    line-height:32px;
+  }
+  h3{
+    font-weight: 700;
+    font-size: 24px;
+    line-height:36px;
+  }
+  h4{
+    font-weight: 700;
+    font-size: 21px;
+    line-height:31px;
+  }
+  h5{
+    font-weight: 400;
+    font-size: 18px;
+    line-height:27px;
+  }
+  h6{
+    font-weight: 400;
+    font-size: 16px;
+    line-height:24px;
+  }
+
+  p{
+    font-weight: 400;
+    font-size: 18px;
+    line-height:27px;
+  }
+  
+  /* #__next-build-watcher{
+    display:none;
+  } */
 `;
 
 export default GlobalStyle;

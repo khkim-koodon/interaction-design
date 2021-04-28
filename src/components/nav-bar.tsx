@@ -25,7 +25,6 @@ const NavigationBar = ({
           <P216px400 color="black">{title}</P216px400>
         </Container>
       </Nav>
-      <FillNavHeight />
     </>
   );
 };
@@ -35,17 +34,21 @@ export default NavigationBar;
 const Nav = styled.nav`
   position: fixed;
   top: 0;
+  width: 100%;
+  z-index: 10000;
 `;
 
 const Container = styled.div`
-  width: 100vw;
   height: 48px;
   max-width: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  margin: 0 auto; // 전체 중앙 정렬
   background-color: ${({ theme }) => theme.white};
+
+  // 부모 relative
+  position: relative;
 
   .left__icon {
     position: absolute;
@@ -56,10 +59,4 @@ const Container = styled.div`
     text-align: center;
     margin: 0 auto;
   }
-`;
-
-const FillNavHeight = styled.div`
-  width: 100vw;
-  height: 48px;
-  max-width: 480px;
 `;
