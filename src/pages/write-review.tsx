@@ -381,7 +381,7 @@ const PreviewPhoto = styled.img`
   object-fit: cover; // 비율에 맞지 않아도 이미지 확대해 박스를 채움.
 
   // 바뀌는 속성
-  max-width: 150px;
+  width: 150px;
   height: 150px;
 
   @media all and (max-width: 400px) {
