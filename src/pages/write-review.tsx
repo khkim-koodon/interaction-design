@@ -210,7 +210,7 @@ const WriteReview = () => {
             </P314px400>
             <BigBtn
               text="포토 리뷰 등록"
-              color="white"
+              textColor="white"
               marginTop="16px"
               validation={validation}
             />
@@ -381,8 +381,8 @@ const PreviewPhoto = styled.img`
   object-fit: cover; // 비율에 맞지 않아도 이미지 확대해 박스를 채움.
 
   // 바뀌는 속성
-  width: 150px;
-  height: 150px;
+  width: 164px;
+  height: 164px;
 
   @media all and (max-width: 400px) {
     width: calc((100vw - 32px) / 1.618 / 1.618);
@@ -393,7 +393,7 @@ const PreviewPhoto = styled.img`
 const MotionUploadPhotoLabel = styled(motion.label)`
   border-radius: 2px;
   border: solid 1px ${({ theme }) => theme.gray1};
-  padding: 0 41px; // 가로만 패딩 적용, 패딩이 없으면 가로로 작아짐. -> max-width와 함께 이용.
+  padding: 0 50px; // 가로만 패딩 적용, 패딩이 없으면 가로로 작아짐. -> max-width와 함께 이용.
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -401,8 +401,8 @@ const MotionUploadPhotoLabel = styled(motion.label)`
   cursor: pointer;
 
   // 바뀌는 속성
-  max-width: 150px;
-  height: 150px;
+  width: 164px;
+  height: 164px;
 
   @media all and (max-width: 400px) {
     max-width: calc((100vw - 32px) / 1.618 / 1.618);

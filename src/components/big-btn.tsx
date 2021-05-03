@@ -3,12 +3,12 @@ import P118px400 from '../foundation/typography/p1-18px-400';
 
 const BigBtn = ({
   text,
-  color,
+  textColor,
   marginTop,
   validation,
 }: {
   text: string;
-  color: string;
+  textColor: string;
   marginTop?: string;
   validation?: boolean;
 }) => {
@@ -18,7 +18,7 @@ const BigBtn = ({
       validation={validation}
       disabled={!validation}
     >
-      <P118px400 color={color}>{text}</P118px400>
+      <P118px400 color={textColor}>{text}</P118px400>
     </Button>
   );
 };
@@ -30,6 +30,7 @@ const Button = styled.button<{ marginTop?: string; validation?: boolean }>`
   height: 48px;
   background-color: ${({ theme, validation }) =>
     validation ? theme.primary : theme.primary40};
+  border-radius: 2px;
   display: flex;
   justify-content: center;
   align-items: center;

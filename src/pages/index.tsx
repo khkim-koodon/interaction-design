@@ -21,6 +21,14 @@ const Index = () => {
           </a>
         </Link>
 
+        <Link href="/consignment-home">
+          <a>
+            <H616px700 color="black" marginTop="72px">
+              Consignment Home
+            </H616px700>
+          </a>
+        </Link>
+
         {/* <PopSpeechBubble
           key={count}
           text="1월 한 달간 택배 신청이 무료!"
