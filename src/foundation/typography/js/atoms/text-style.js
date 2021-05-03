@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { motion } from 'framer-motion';
 
 const TextStyle = ({
   type, // 기본값은 styled-components에서 p
@@ -12,16 +11,6 @@ const TextStyle = ({
   color,
   opacity,
   marginTop,
-}: {
-  type: any;
-  children: JSX.Element | string;
-  fontSize: string;
-  weight: number;
-  lineHeight?: string;
-  letterSpacing?: string;
-  color: string;
-  opacity?: number;
-  marginTop?: string;
 }) => {
   const themeContext = useContext(ThemeContext);
   const textColorFunc = () => {
@@ -59,7 +48,7 @@ const TextStyle = ({
 
 export default TextStyle;
 
-const Text = styled.p<TextType>`
+const Text = styled.p`
   font-weight: ${({ weight }) => weight};
   line-height: ${({ lineHeight }) => lineHeight};
   letter-spacing: ${({ letterSpacing }) => letterSpacing};
@@ -68,13 +57,3 @@ const Text = styled.p<TextType>`
   margin-top: ${({ marginTop }) => marginTop};
   font-size: ${({ fontSize }) => fontSize};
 `;
-
-type TextType = {
-  fontSize: string;
-  weight: number;
-  lineHeight?: number;
-  letterSpacing?: string;
-  textColor: any;
-  opacity?: number;
-  marginTop?: string;
-};

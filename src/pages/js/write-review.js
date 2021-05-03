@@ -12,26 +12,20 @@ import IconAddPhoto24 from '../foundation/svg/icn_add_photo_24';
 import BigBtn from '../components/big-btn';
 import IconTextClose24 from '../foundation/svg/icn-textfield-x-24';
 
-// https://github.com/microsoft/TypeScript/issues/31816
-// amatiasq's의 Comment
-interface Event<T = EventTarget> {
-  target: T;
-}
-
 const WriteReview = () => {
   // S of 서버로 전송할 데이터
   const [starCount, setStarCount] = useState([0, 0, 0, 0, 0]); // 0: off 1: on
   const [reviewText, setReviewText] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState([]);
   // E of 서버로 전송할 데이터
 
   // S of Validation
   const [validation, setValidation] = useState(false); // 버튼 disabled + 상태 변경
 
   useEffect(() => {
-    const starCountSum: number = starCount.reduce((a, b) => a + b);
-    const reviewTextValidation: boolean = reviewText.length > 19;
-    const imagesValidation: boolean = images.length > 0;
+    const starCountSum = starCount.reduce((a, b) => a + b);
+    const reviewTextValidation = reviewText.length > 19;
+    const imagesValidation = images.length > 0;
 
     starCountSum > 0 && reviewTextValidation && imagesValidation
       ? setValidation(true)
@@ -48,24 +42,23 @@ const WriteReview = () => {
   // E of Star Animation
 
   // S of upload Image
-  const imageHandler = (e: Event<HTMLInputElement>) => {
-    const fileArray = Array.from(e.target.files as any).map((file) =>
+  const imageHandler = (e) => {
+    const fileArray = Array.from(e.target.files).map((file) =>
       URL.createObjectURL(file)
     );
 
-    // https://www.youtube.com/watch?v=iBonBC-ySgo
     if (e.target.files) {
       images.length + fileArray.length < 6 // 사진은 5장까지만 올릴 수 있음. 5장 미만인 상태에서 파일 업로드 화면으로 온 사용자가 5개가 넘는 사진을 올리는 걸 대비
-        ? setImages((prevImages: string[]) => prevImages.concat(fileArray))
+        ? setImages((prevImages) => prevImages.concat(fileArray))
         : alert('사진은 5장까지만 올릴 수 있어요 😂');
 
-      Array.from(e.target.files).map((file: any) => URL.revokeObjectURL(file));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
     }
   };
 
   // 올린 사진 배치
-  const renderPhotos = (source: string[]) => {
-    return source.map((photo: string) => {
+  const renderPhotos = (source) => {
+    return source.map((photo) => {
       return (
         <PreviewPhotoWrap key={photo}>
           <PreviewPhoto src={photo} />
@@ -78,10 +71,8 @@ const WriteReview = () => {
   };
 
   // 올린 사진 삭제
-  const removePhoto = (key: string) => {
-    const updateImages: string[] = images.filter(
-      (image: string) => image !== key
-    );
+  const removePhoto = (key) => {
+    const updateImages = images.filter((image) => image !== key);
     setImages(updateImages);
   };
 
@@ -89,7 +80,7 @@ const WriteReview = () => {
   // 최초 리뷰 등록, 리뷰 수정에서 모두 '사진 올리기' 버튼을 눌렀을 때 최초 1회만 보여줌
   const [seePhotoGuide, setSeePhotoGuide] = useState(false);
 
-  const seePhotoGuideCheck = (e: React.MouseEvent<HTMLInputElement>) => {
+  const seePhotoGuideCheck = (e) => {
     if (images.length >= 5) {
       e.preventDefault();
       alert('사진은 5장까지만 올릴 수 있어요 😂');
@@ -169,7 +160,6 @@ const WriteReview = () => {
           {/* E of Textfield Area */}
 
           {/* S of PhotoUpload Area */}
-          {/* https://github.com/facebook/react/issues/310 */}
           <PhotoUploadArea
             variants={fadeIn}
             initial={false}
@@ -195,7 +185,6 @@ const WriteReview = () => {
               {images && renderPhotos(images)}
             </PreviewPhotoTotalWrap>
           </PhotoUploadArea>
-          {/* https://helloinyong.tistory.com/275 */}
           {/* E of PhotoUpload Area */}
 
           {/* S of Bottom Button Area */}
@@ -343,7 +332,7 @@ const CountCharacters = styled.div`
 const PhotoUploadArea = styled(motion.div)`
   overflow-x: scroll;
   overflow-y: hidden;
-  white-space: nowrap; // white-space: nowrap: 줄바꿈을 하지 않겠다
+  white-space: nowrap;
   margin-top: 16px;
   padding-left: 16px;
   display: flex;
