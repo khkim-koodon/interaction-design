@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import IconStar48Fill from '../foundation/svg/icn_star_48_fill';
+import IconStar48Fill from '../../foundation/svg/icn_star_48_fill';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import PopSpeechBubble from '../framer/pop-speech-bubble';
-import NavigationBar from '../components/nav-bar';
-import H324px400 from '../foundation/typography/h3-24px-400';
-import H616px700 from '../foundation/typography/h6-16px-700';
-import P314px400 from '../foundation/typography/p3-14px-400';
+import PopSpeechBubble from '../../framer/pop-speech-bubble';
+import NavigationBar from '../../components/nav-bar';
+import H324px400 from '../../foundation/typography/h3-24px-400';
+import H616px700 from '../../foundation/typography/h6-16px-700';
+import P314px400 from '../../foundation/typography/p3-14px-400';
 import TextareaAutosize from 'react-textarea-autosize';
-import IconAddPhoto24 from '../foundation/svg/icn_add_photo_24';
-import BigBtn from '../components/big-btn';
-import IconTextClose24 from '../foundation/svg/icn-textfield-x-24';
+import IconAddPhoto24 from '../../foundation/svg/icn_add_photo_24';
+import BigBtn from '../../components/big-btn';
+import IconTextClose24 from '../../foundation/svg/icn-textfield-x-24';
 
 // https://github.com/microsoft/TypeScript/issues/31816
 // amatiasq's의 Comment

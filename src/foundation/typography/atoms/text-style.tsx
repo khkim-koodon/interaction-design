@@ -36,6 +36,8 @@ const TextStyle = ({
       return themeContext['black'];
     } else if (color === 'white') {
       return themeContext['white'];
+    } else if (color === 'primary') {
+      return themeContext['primary'];
     }
   };
   const textColor = textColorFunc();

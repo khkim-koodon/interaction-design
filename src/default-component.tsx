@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const defaultComponent = () => {
+const DefaultComponent = () => {
   return <></>;
 };
 
-export default defaultComponent;
+export default DefaultComponent;

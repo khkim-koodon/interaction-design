@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import styled from 'styled-components';
-import BigBtn from '../components/big-btn';
-import NavigationBar from '../components/nav-bar';
-import H227px400 from '../foundation/typography/h2-27px-400';
-import H227px700 from '../foundation/typography/h2-27px-700';
-import P118px400 from '../foundation/typography/p1-18px-400';
-import P314px400 from '../foundation/typography/p3-14px-400';
-import P314px700 from '../foundation/typography/p3-14px-700';
+import BigBtn from '../../components/big-btn';
+import NavigationBar from '../../components/nav-bar';
+import H227px400 from '../../foundation/typography/h2-27px-400';
+import H227px700 from '../../foundation/typography/h2-27px-700';
+import P118px400 from '../../foundation/typography/p1-18px-400';
+import P314px400 from '../../foundation/typography/p3-14px-400';
+import P314px700 from '../../foundation/typography/p3-14px-700';
 import Confetti from 'react-dom-confetti';
 
 const ConsignmentHome = () => {
@@ -15,17 +15,25 @@ const ConsignmentHome = () => {
   const [commission, setComminssion] = useState('?원');
 
   const activeCoinRotate = () => {
-    const executed = sessionStorage.getItem('activeCoinRotate');
+    // Remark -> Production
+    // const executed = sessionStorage.getItem('activeCoinRotate');
 
-    if (commission === '?원' || !executed) {
-      setCoinRotate(true);
-      setComminssion('100원');
-      sessionStorage.setItem('activeCoinRotate', 'true');
-    }
+    // if (commission === '?원' || !executed) {
+    //   setCoinRotate(true);
+    //   setComminssion('100원');
+    //   sessionStorage.setItem('activeCoinRotate', 'true');
+    // }
+
+    setCoinRotate(true);
+    setComminssion('100원');
+    setTimeout(() => {
+      setCoinRotate(false);
+      setComminssion('?원');
+    }, 1000);
   };
 
   const config = {
-    angle: 90,
+    angle: 180,
     spread: 360,
     startVelocity: 40,
     elementCount: 70,
@@ -45,7 +53,7 @@ const ConsignmentHome = () => {
         <H227px700 color="black" marginTop="72px">
           중고 명품 판매
         </H227px700>
-        <H227px400 color="black">쿠돈에서 도와드릴게요 🙌</H227px400>
+        <H227px400 color="black">쿠돈이 도와드릴게요 🙌</H227px400>
         <div className="p__wrap">
           <P314px400 color="gray3">첫 판매는</P314px400>
           <P314px700 color="gray3">{commission}</P314px700>
@@ -110,9 +118,9 @@ const MotionCoin = styled(motion.div)`
   border-radius: 50%;
   /* border-style: solid; */
   border-width: 1px;
-  border-image-source: linear-gradient(to bottom, #f8f8f8, #d0d0d0);
-  margin: 16px auto 0;
+  border-image: linear-gradient(to bottom, #f8f8f8, #d0d0d0), 50%;
   border-image-slice: 1;
+  margin: 16px auto 0;
   background-color: ${({ theme }) => theme.white};
 
   /* 텍스트 정렬 */
@@ -139,7 +147,7 @@ const CoinVariants = {
   animate: {
     scaleX: [1, 0.9, 1],
     scaleY: [1, 1.2, 1],
-    rotateY: 5760,
+    rotateY: 11520,
     transition: { duration: 0.4 },
   },
 };
