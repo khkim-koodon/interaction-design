@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import P118px400 from '../elements/typography/p1-18px-400';
+import P118px400 from '../foundation/typography/p1-18px-400';
 
 const BigBtn = ({
   text,

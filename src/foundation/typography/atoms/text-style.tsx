@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { motion } from 'framer-motion';
 
 const TextStyle = ({
   type, // 기본값은 styled-components에서 p

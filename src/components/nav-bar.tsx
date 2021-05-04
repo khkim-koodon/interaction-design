@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
-import IconChevronLeft24 from '../elements/svg/icn_chevron_left_24';
-import P216px400 from '../elements/typography/p2-16px-400';
+import IconChevronLeft24 from '../foundation/svg/icn_chevron_left_24';
+import P216px400 from '../foundation/typography/p2-16px-400';
 
 const NavigationBar = ({
   leftAction,

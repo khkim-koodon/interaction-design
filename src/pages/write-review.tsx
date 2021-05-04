@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import IconStar48Fill from '../elements/svg/icn_star_48_fill';
+import IconStar48Fill from '../foundation/svg/icn_star_48_fill';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import PopSpeechBubble from '../framer/pop-speech-bubble';
 import NavigationBar from '../components/nav-bar';
-import H324px400 from '../elements/typography/h3-24px-400';
-import H616px700 from '../elements/typography/h6-16px-700';
-import P314px400 from '../elements/typography/p3-14px-400';
+import H324px400 from '../foundation/typography/h3-24px-400';
+import H616px700 from '../foundation/typography/h6-16px-700';
+import P314px400 from '../foundation/typography/p3-14px-400';
 import TextareaAutosize from 'react-textarea-autosize';
-import IconAddPhoto24 from '../elements/svg/icn_add_photo_24';
+import IconAddPhoto24 from '../foundation/svg/icn_add_photo_24';
 import BigBtn from '../components/big-btn';
-import IconTextClose24 from '../elements/svg/icn-textfield-x-24';
+import IconTextClose24 from '../foundation/svg/icn-textfield-x-24';
 
 // https://github.com/microsoft/TypeScript/issues/31816
 // amatiasq's의 Comment
@@ -37,6 +37,7 @@ const WriteReview = () => {
       ? setValidation(true)
       : setValidation(false);
   }, [reviewText, images]);
+  // star의 상태(starCount)는 1번 선택하면 무조건 활성화된 상태이기 때문에 의존성 배열에 포함 X
   // E of Validation
 
   // S of Star Animation
@@ -54,7 +55,7 @@ const WriteReview = () => {
 
     // https://www.youtube.com/watch?v=iBonBC-ySgo
     if (e.target.files) {
-      images.length + fileArray.length < 6 // 사진은 5장까지만 올릴 수 있음.
+      images.length + fileArray.length < 6 // 사진은 5장까지만 올릴 수 있음. 5장 미만인 상태에서 파일 업로드 화면으로 온 사용자가 5개가 넘는 사진을 올리는 걸 대비
         ? setImages((prevImages: string[]) => prevImages.concat(fileArray))
         : alert('사진은 5장까지만 올릴 수 있어요 😂');
 

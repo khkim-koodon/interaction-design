@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import FilterReset from '../framer/filter-reset';
-import H616px700 from '../elements/typography/h6-16px-700';
+import H616px700 from '../foundation/typography/h6-16px-700';
 
 const Index = () => {
   // onAnimationEnd={() => setMotion(false)}
