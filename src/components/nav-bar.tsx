@@ -1,14 +1,17 @@
 import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
+import IconChannelTalk24 from '../foundation/svg/icn_channel-talk_24';
 import IconChevronLeft24 from '../foundation/svg/icn_chevron_left_24';
 import P216px400 from '../foundation/typography/p2-16px-400';
 
 const NavigationBar = ({
   leftAction,
   title,
+  rightAction,
 }: {
   leftAction?: 'back';
-  title: string;
+  title?: string;
+  rightAction?: 'channelTalk';
 }) => {
   const router = useRouter();
 
@@ -22,7 +25,10 @@ const NavigationBar = ({
               className="left__icon"
             />
           )}
-          <P216px400 color="black">{title}</P216px400>
+          {title && <P216px400 color="black">{title}</P216px400>}
+          {rightAction === 'channelTalk' && (
+            <IconChannelTalk24 className="right__icon" />
+          )}
         </Container>
       </Nav>
     </>
@@ -58,5 +64,10 @@ const Container = styled.div`
   p {
     text-align: center;
     margin: 0 auto;
+  }
+
+  .right__icon {
+    position: absolute;
+    right: 16px;
   }
 `;
