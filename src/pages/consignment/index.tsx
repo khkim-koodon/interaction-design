@@ -9,27 +9,15 @@ import P118px400 from '../../foundation/typography/p1-18px-400';
 import P314px400 from '../../foundation/typography/p3-14px-400';
 import P314px700 from '../../foundation/typography/p3-14px-700';
 import Confetti from 'react-dom-confetti';
+import ReactCountUp from 'react-countup';
 
 const ConsignmentHome = () => {
-  const [coinRotate, setCoinRotate] = useState(false);
   const [commission, setComminssion] = useState('?원');
+  const [activeCountUp, setActiveCountUp] = useState(false);
 
-  const activeCoinRotate = () => {
-    // Remark -> Production
-    // const executed = sessionStorage.getItem('activeCoinRotate');
-
-    // if (commission === '?원' || !executed) {
-    //   setCoinRotate(true);
-    //   setComminssion('100원');
-    //   sessionStorage.setItem('activeCoinRotate', 'true');
-    // }
-
-    setCoinRotate(true);
-    setComminssion('100원');
-    setTimeout(() => {
-      setCoinRotate(false);
-      setComminssion('?원');
-    }, 1000);
+  const onActiveCountUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setActiveCountUp(true);
   };
 
   const config = {
@@ -49,26 +37,45 @@ const ConsignmentHome = () => {
   return (
     <>
       <NavigationBar rightAction="channelTalk" />
+      <Confetti active={true} config={config} />
       <Main>
         <H227px700 color="black" marginTop="72px">
           중고 명품 판매
         </H227px700>
-        <H227px400 color="black">쿠돈이 도와드릴게요 🙌</H227px400>
-        <div className="p__wrap">
-          <P314px400 color="gray3">첫 판매는</P314px400>
-          <P314px700 color="gray3">{commission}</P314px700>
-          <P314px400 color="gray3">에 도와드려요!</P314px400>
-        </div>
+        <H227px400 color="black" marginTop="-2px">
+          쿠돈이 도와드릴게요
+        </H227px400>
 
-        <Confetti active={coinRotate} config={config} />
-        <MotionCoin
-          onClick={activeCoinRotate}
-          variants={CoinVariants}
-          initial={false}
-          animate={coinRotate === true ? 'animate' : 'initial'}
-        >
-          <P118px400 color="black">{commission}</P118px400>
-        </MotionCoin>
+        <EventBox>
+          <div className="emoji__wrap">
+            <p className="emoji">😲</p>
+          </div>
+
+          <P314px400 color="gray4" marginTop="16px">
+            첫 판매는
+          </P314px400>
+          <div className="p__wrap">
+            {activeCountUp ? (
+              <>{/* <ReactCountUp start={0} end={100} /> */}</>
+            ) : (
+              <>
+                <P314px700 color="gray4">?</P314px700>
+              </>
+            )}
+            <P314px700 color="gray4">원</P314px700>
+            <P314px400 color="gray4">에 도와드려요</P314px400>
+          </div>
+          <SmallButton onClick={onActiveCountUp}>
+            <P314px700 color="gray1">?원 확인하기</P314px700>
+          </SmallButton>
+        </EventBox>
+
+        <H227px700 color="black" marginTop="48px">
+          쿠돈이
+        </H227px700>
+        <H227px700 color="black" marginTop="-2px">
+          무엇을 도와주나요? 🤔
+        </H227px700>
 
         <ButtonWrap>
           <BigBtn //
@@ -90,64 +97,71 @@ const Main = styled.main`
   margin: 0 auto;
   min-height: 100vh;
   box-shadow: 0px 0px 19px 0px rgb(0, 0, 0, 0.16);
+  text-align: center;
 
   h2 {
-    text-align: center;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.8px;
+  }
+`;
+
+const EventBox = styled.div`
+  margin: 24px 16px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: ${({ theme }) => theme.white};
+  box-shadow: 1px 2px 13px rgba(52, 84, 33, 0.1);
+  border-radius: 20px;
+
+  .emoji__wrap {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 36px auto 0;
+  }
+
+  .emoji {
+    font-size: 64px;
   }
 
   .p__wrap {
     display: flex;
     justify-content: center;
-    margin-top: 48px;
-
     p {
       display: inline-block;
     }
-
-    p:nth-child(2) {
-      margin-left: 3px;
-    }
   }
 `;
 
-const MotionCoin = styled(motion.div)`
-  width: 240px;
-  height: 240px;
-  box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.16);
-  border-radius: 50%;
-  /* border-style: solid; */
-  border-width: 1px;
-  border-image: linear-gradient(to bottom, #f8f8f8, #d0d0d0), 50%;
-  border-image-slice: 1;
-  margin: 16px auto 0;
-  background-color: ${({ theme }) => theme.white};
-
-  /* 텍스트 정렬 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  p {
-    font-size: 48px;
-    font-weight: 700;
-  }
+const SmallButton = styled(motion.button)`
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.gray4};
+  margin: 16px auto 36px;
+  border-radius: 2px;
 `;
 
 const ButtonWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 72px 16px 0;
+  position: fixed;
+  bottom: 63px; // 48 + 1 + 16
+  left: 16px;
+  right: 16px;
+  max-width: 448px;
+  margin: 0 auto;
 `;
 
 const CoinVariants = {
-  //   initial: { rotateY: 0 },
-
+  initial: {
+    scaleX: 1,
+    scaleY: 1,
+  },
   animate: {
-    scaleX: [1, 0.9, 1],
-    scaleY: [1, 1.2, 1],
-    rotateY: 11520,
+    scaleX: [1, 0.8, 1],
+    scaleY: [1, 1.05, 1],
+    rotateY: 23040, // 11520*2
     transition: { duration: 0.4 },
   },
 };

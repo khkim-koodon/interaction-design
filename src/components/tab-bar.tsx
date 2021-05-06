@@ -5,6 +5,9 @@ import IconShopping24 from '../foundation/svg/tab-bar/icn_shopping_24';
 import IconConsignment24 from '../foundation/svg/tab-bar/icn_consignment_24';
 import IconMy24 from '../foundation/svg/tab-bar/icn_my_24';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 
 const TabBar = ({ pathname }: { pathname: string }) => {
   const currentTab = () => {
@@ -23,12 +26,19 @@ const TabBar = ({ pathname }: { pathname: string }) => {
   const onColor = 'primary';
   const offColor = 'gray3';
 
+  const themeContext = useContext(ThemeContext);
+  const hoverAndTapColor: string = themeContext.primary40;
+
   return (
     <>
       <Nav>
         {/* 1번째 탭 */}
         <Link href="/">
-          <Tab onClick={() => setOnOff([1, 0, 0])}>
+          <Tab
+            onClick={() => setOnOff([1, 0, 0])}
+            // whileHover={{ backgroundColor: hoverAndTapColor }}
+            // whileTap={{ backgroundColor: hoverAndTapColor }}
+          >
             <IconShopping24 isActive={onOff[0]} />
             <P510px400 color={onOff[0] === 1 ? onColor : offColor}>
               쇼핑
@@ -37,7 +47,11 @@ const TabBar = ({ pathname }: { pathname: string }) => {
         </Link>
         {/* 2번째 탭 */}
         <Link href="consignment">
-          <Tab onClick={() => setOnOff([0, 1, 0])}>
+          <Tab
+            onClick={() => setOnOff([0, 1, 0])}
+            // whileHover={{ backgroundColor: hoverAndTapColor }}
+            // whileTap={{ backgroundColor: hoverAndTapColor }}
+          >
             <IconConsignment24 isActive={onOff[1]} />
             <P510px400 color={onOff[1] === 1 ? onColor : offColor}>
               판매 대행
@@ -46,7 +60,11 @@ const TabBar = ({ pathname }: { pathname: string }) => {
         </Link>
         {/* 3번째 탭 */}
         <Link href="/mypage">
-          <Tab onClick={() => setOnOff([0, 0, 1])}>
+          <Tab
+            onClick={() => setOnOff([0, 0, 1])}
+            // whileHover={{ backgroundColor: hoverAndTapColor }}
+            // whileTap={{ backgroundColor: hoverAndTapColor }}
+          >
             <IconMy24 isActive={onOff[2]} />
             <P510px400 color={onOff[2] === 1 ? onColor : offColor}>
               마이 쿠돈
@@ -78,7 +96,7 @@ const Nav = styled.nav`
   align-items: center;
 `;
 
-const Tab = styled.a`
+const Tab = styled(motion.a)`
   width: 100%;
   height: 100%;
   display: flex;
