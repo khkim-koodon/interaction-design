@@ -56,7 +56,13 @@ const ConsignmentHome = () => {
           </P314px400>
           <div className="p__wrap">
             {activeCountUp ? (
-              <>{/* <ReactCountUp start={0} end={100} /> */}</>
+              <>
+                <ReactCountUp
+                  start={0}
+                  end={100}
+                  className="react__count__up"
+                />
+              </>
             ) : (
               <>
                 <P314px700 color="gray4">?</P314px700>
@@ -134,6 +140,14 @@ const EventBox = styled.div`
     p {
       display: inline-block;
     }
+  }
+
+  .react__count__up {
+    font-family: Spoqa Han Sans, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.gray4};
+    line-height: 20px;
   }
 `;
 
