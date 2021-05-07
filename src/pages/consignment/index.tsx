@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BigBtn from '../../components/big-btn';
 import NavigationBar from '../../components/nav-bar';
@@ -12,10 +12,9 @@ import Confetti from 'react-dom-confetti';
 import ReactCountUp from 'react-countup';
 import P510px400 from '../../foundation/typography/p5-10px-400';
 import { useRouter } from 'next/dist/client/router';
+import IconInfo16 from '../../foundation/svg/icn-information-16';
 
 const ConsignmentHome = () => {
-  const [commission, setComminssion] = useState('?원');
-
   return (
     <>
       <NavigationBar rightAction="channelTalk" />
@@ -26,23 +25,24 @@ const ConsignmentHome = () => {
         <H227px400 color="black" marginTop="-2px">
           쿠돈이 도와드릴게요
         </H227px400>
+        <P314px400 color="gray3" marginTop="16px">
+          쉬고 있는 중고 명품 쿠돈에 맡겨
+        </P314px400>
+        <P314px400 color="gray3">편하게 판매해보면 어떠세요?</P314px400>
 
         <EventBox />
 
-        <H227px700 color="black" marginTop="48px">
-          쿠돈이
-        </H227px700>
-        <H227px700 color="black" marginTop="-2px">
-          무엇을 도와주나요? 🤔
-        </H227px700>
+        <WhatCanKoodonDoForYou />
 
-        <ButtonWrap>
+        <CommissionInformation />
+
+        <BigButtonWrap>
           <BigBtn //
             text="판매 대행 신청"
             textColor="white"
             validation={true}
           />
-        </ButtonWrap>
+        </BigButtonWrap>
       </Main>
     </>
   );
@@ -52,8 +52,10 @@ export default ConsignmentHome;
 
 const Main = styled.main`
   overflow-x: hidden; // 애니메이션 작동 시 width 작아지는 문제 해결
+  overflow-y: auto;
   max-width: 480px;
   margin: 0 auto;
+  padding-bottom: 172px;
   min-height: 100vh;
   box-shadow: 0px 0px 19px 0px rgb(0, 0, 0, 0.16);
   text-align: center;
@@ -61,6 +63,15 @@ const Main = styled.main`
   h2 {
     letter-spacing: -0.8px;
   }
+`;
+
+const BigButtonWrap = styled.div`
+  position: fixed;
+  bottom: 63px; // 48 + 1 + 16
+  left: 16px;
+  right: 16px;
+  max-width: 448px;
+  margin: 0 auto;
 `;
 
 // S of EventBox Component
@@ -71,7 +82,7 @@ const EventBox = () => {
     startVelocity: 40,
     elementCount: 70,
     dragFriction: 0.12,
-    duration: 2500,
+    duration: 3000,
     stagger: 3,
     width: '10px',
     height: '10px',
@@ -79,12 +90,20 @@ const EventBox = () => {
     colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'],
   };
 
-  // 로컬 or 세션 스토리지에 저장한 값.
+  // 세션 동안 1번만 '?원 확인' 버튼 누를 수 있도록 유도
+  useEffect(() => {
+    const isActiveEventAnimationInSessionStorage = window.sessionStorage.getItem(
+      'activeEventAnimation'
+    );
+    isActiveEventAnimationInSessionStorage === 'true' &&
+      setActiveEventAnimation(true);
+  }, []);
 
   const [activeEventAnimation, setActiveEventAnimation] = useState(false);
   const onActiveEventAnimation = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setActiveEventAnimation(!activeEventAnimation);
+    setActiveEventAnimation(!activeEventAnimation); // Production에서 변경
+    window.sessionStorage.setItem('activeEventAnimation', 'true');
   };
 
   const router = useRouter();
@@ -102,7 +121,7 @@ const EventBox = () => {
       <Confetti active={activeEventAnimation} config={ConfettiConfig} />
       <div className="emoji__wrap">
         {!activeEventAnimation ? (
-          // motion.p를 리액트가 구분하기 위해 key 필요
+          // 두 motion.p를 리액트가 구분하기 위해 key 필요
           <motion.p
             key="emojiAstonishedFaceVariants"
             className="emoji"
@@ -222,20 +241,138 @@ const EventBoxContainer = styled.div`
 `;
 // E of EventBox Component
 
+const WhatCanKoodonDoForYou = () => {
+  const [
+    activeKoodonDoForYouAnimation,
+    setActiveKoodonDoForYouAnimation,
+  ] = useState(false);
+  const onActiveKoodonDoForYouAnimation = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    setActiveKoodonDoForYouAnimation(!activeKoodonDoForYouAnimation); // Production에서 변경
+  };
+
+  return (
+    <>
+      <H227px700 color="black" marginTop="48px">
+        쿠돈이
+      </H227px700>
+      <H227px700 color="black" marginTop="-2px">
+        무엇을 도와주나요? 🤔
+      </H227px700>
+
+      {/* {!activeKoodonDoForYouAnimation ? (
+        <SmallButton
+          onClick={onActiveKoodonDoForYouAnimation}
+          variants={smallButtonVariants}
+          whileHover="whileHover"
+          whileTap="whileTap"
+        >
+          <P314px700 color="gray1">? 확인하기</P314px700>
+        </SmallButton>
+      ) : (
+        <></>`
+      )} */}
+
+      <DoForYouWrap>
+        <DoForYouRow>
+          <DoForYouBox>
+            <p className="question__mark">?</p>
+          </DoForYouBox>
+          <div className="gap" />
+
+          <DoForYouBox>
+            <p className="question__mark">?</p>
+          </DoForYouBox>
+        </DoForYouRow>
+
+        <DoForYouRow>
+          <DoForYouBox>
+            <p className="question__mark">?</p>
+          </DoForYouBox>
+          <div className="gap" />
+          <DoForYouBox>
+            <p className="question__mark">?</p>
+          </DoForYouBox>
+        </DoForYouRow>
+      </DoForYouWrap>
+    </>
+  );
+};
+
+const DoForYouWrap = styled.div`
+  margin: 24px 16px 0;
+
+  .gap {
+    width: 11px;
+    height: 100%;
+  }
+
+  ul:nth-child(2) {
+    margin-top: 16px;
+  }
+`;
+
+const DoForYouRow = styled.ul`
+  display: flex;
+  justify-content: space-evenly;
+
+  .question__mark {
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    color: ${({ theme }) => theme.gray4};
+  }
+`;
+
+const DoForYouBox = styled.li`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 2px 13px rgba(52, 84, 33, 0.1);
+  border-radius: 20px;
+  width: 45vw;
+  height: 45vw;
+  max-height: 220.48px;
+`;
+
+const CommissionInformation = () => {
+  return (
+    <>
+      {/* 모달 콜백 */}
+      {/* <InfoButton onClick={openModal(CommissionInfoText(() => closeModal()))}> */}
+      <InfoButton onClick={() => {}}>
+        <IconInfo16 />
+        <P314px400 color="gray2">수수료 안내</P314px400>
+      </InfoButton>
+    </>
+  );
+};
+
+const InfoButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 48px;
+
+  span {
+    margin-top: 1px; // 시각 보정
+  }
+
+  p {
+    margin-left: 4px;
+  }
+`;
+
+// Common elements & framer-motion variants
 const SmallButton = styled(motion.button)`
   padding: 8px 16px;
   background-color: ${({ theme }) => theme.gray4};
   margin: 16px auto 36px;
   border-radius: 2px;
-`;
-
-const ButtonWrap = styled.div`
-  position: fixed;
-  bottom: 63px; // 48 + 1 + 16
-  left: 16px;
-  right: 16px;
-  max-width: 448px;
-  margin: 0 auto;
 `;
 
 const smallButtonVariants = {
