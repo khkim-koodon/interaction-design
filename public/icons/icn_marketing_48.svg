@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>000 Icon/48/icn_marketing_48</title>
+    <g id="000-Icon/48/icn_marketing_48" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
+        <rect id="48*48" x="0" y="0" width="48" height="48"></rect>
+        <path d="M44,6 L44,42 L32,42 L32,6 L44,6 Z M16,32 L16,42 L4,42 L4,32 L16,32 Z M30,24 L30,42 L18,42 L18,24 L30,24 Z M42,8 L34,8 L34,40 L42,40 L42,8 Z M14,34 L6,34 L6,40 L14,40 L14,34 Z M28,26 L20,26 L20,40 L28,40 L28,26 Z" id="Shape" fill="#5D5D5D" fillRule="nonzero"></path>
+        <polygon id="point" fill="#78A353" points="32 6 44 6 44 10 32 10"></polygon>
+    </g>
+</svg>

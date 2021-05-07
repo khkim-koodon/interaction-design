@@ -13,6 +13,8 @@ import ReactCountUp from 'react-countup';
 import P510px400 from '../../foundation/typography/p5-10px-400';
 import { useRouter } from 'next/dist/client/router';
 import IconInfo16 from '../../foundation/svg/icn-information-16';
+import P216px700 from '../../foundation/typography/p2-16px-700';
+import P216px400 from '../../foundation/typography/p2-16px-400';
 
 const ConsignmentHome = () => {
   return (
@@ -82,7 +84,7 @@ const EventBox = () => {
     startVelocity: 40,
     elementCount: 70,
     dragFriction: 0.12,
-    duration: 3000,
+    duration: 1500,
     stagger: 3,
     width: '10px',
     height: '10px',
@@ -169,7 +171,7 @@ const EventBox = () => {
         onClick={
           !activeEventAnimation ? onActiveEventAnimation : goToEventLanding
         }
-        variants={smallButtonVariants}
+        variants={buttonHoverTapVariants}
         whileHover="whileHover"
         whileTap="whileTap"
       >
@@ -246,12 +248,15 @@ const WhatCanKoodonDoForYou = () => {
     activeKoodonDoForYouAnimation,
     setActiveKoodonDoForYouAnimation,
   ] = useState(false);
-  const onActiveKoodonDoForYouAnimation = (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    setActiveKoodonDoForYouAnimation(!activeKoodonDoForYouAnimation); // Production에서 변경
-  };
+
+  // 세션 동안 1번만 '?' 버튼 누를 수 있도록 유도
+  // useEffect(() => {
+  //   const activeKoodonDoForYouAnimation = window.sessionStorage.getItem(
+  //     'activeKoodonDoForYouAnimation'
+  //   );
+  //   activeKoodonDoForYouAnimation === 'true' &&
+  //     setActiveKoodonDoForYouAnimation(true);
+  // }, []);
 
   return (
     <>
@@ -262,46 +267,101 @@ const WhatCanKoodonDoForYou = () => {
         무엇을 도와주나요? 🤔
       </H227px700>
 
-      {/* {!activeKoodonDoForYouAnimation ? (
-        <SmallButton
-          onClick={onActiveKoodonDoForYouAnimation}
-          variants={smallButtonVariants}
-          whileHover="whileHover"
-          whileTap="whileTap"
-        >
-          <P314px700 color="gray1">? 확인하기</P314px700>
-        </SmallButton>
-      ) : (
-        <></>`
-      )} */}
-
-      <DoForYouWrap>
+      <DoForYouWrap
+        variants={stagger}
+        initial={false}
+        animate={activeKoodonDoForYouAnimation && 'animate'}
+      >
         <DoForYouRow>
-          <DoForYouBox>
-            <p className="question__mark">?</p>
-          </DoForYouBox>
+          <DoForYouBox
+            activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
+            setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
+            svgSrc="/icons/icn_marketing_48.svg"
+            text1="빠른 판매 위한"
+            text2="마케팅"
+          />
           <div className="gap" />
-
-          <DoForYouBox>
-            <p className="question__mark">?</p>
-          </DoForYouBox>
+          <DoForYouBox
+            activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
+            setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
+            svgSrc="/icons/icn_camera_48.svg"
+            text1="전문적인"
+            text2="상품 사진 촬영"
+          />
         </DoForYouRow>
 
         <DoForYouRow>
-          <DoForYouBox>
-            <p className="question__mark">?</p>
-          </DoForYouBox>
+          <DoForYouBox
+            activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
+            setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
+            svgSrc="/icons/icn_packing_shipping_48.svg"
+            text1="구매 고객에게"
+            text2="포장 후 택배 발송"
+          />
           <div className="gap" />
-          <DoForYouBox>
-            <p className="question__mark">?</p>
-          </DoForYouBox>
+          <DoForYouBox
+            activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
+            setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
+            svgSrc="/icons/icn_seoul_48.svg"
+            text1="서울 지역"
+            text2="무료 방문 수거"
+          />
         </DoForYouRow>
       </DoForYouWrap>
     </>
   );
 };
 
-const DoForYouWrap = styled.div`
+const DoForYouBox = ({
+  activeKoodonDoForYouAnimation,
+  setActiveKoodonDoForYouAnimation,
+  svgSrc,
+  text1,
+  text2,
+}: {
+  activeKoodonDoForYouAnimation: boolean;
+  setActiveKoodonDoForYouAnimation: Function;
+  svgSrc: string;
+  text1: string;
+  text2: string;
+}) => {
+  const onActiveKoodonDoForYouAnimation = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    setActiveKoodonDoForYouAnimation(true); // Production에서 변경
+    window.sessionStorage.setItem('activeKoodonDoForYouAnimation', 'true');
+  };
+
+  return (
+    <>
+      <DoForYouBoxContainer
+        onClick={onActiveKoodonDoForYouAnimation}
+        variants={doForYouBoxVariants}
+      >
+        {!activeKoodonDoForYouAnimation ? (
+          <p className="question__mark">?</p>
+        ) : (
+          <>
+            <motion.div
+              variants={doForYouBoxItemVariants}
+              initial="initial"
+              animate="animate"
+            >
+              <img src={svgSrc} />
+              <P314px400 color="gray4" marginTop="4px">
+                {text1}
+              </P314px400>
+              <P314px400 color="gray4">{text2}</P314px400>
+            </motion.div>
+          </>
+        )}
+      </DoForYouBoxContainer>
+    </>
+  );
+};
+
+const DoForYouWrap = styled(motion.ul)`
   margin: 24px 16px 0;
 
   .gap {
@@ -309,12 +369,17 @@ const DoForYouWrap = styled.div`
     height: 100%;
   }
 
-  ul:nth-child(2) {
+  li:nth-child(2) {
     margin-top: 16px;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
   }
 `;
 
-const DoForYouRow = styled.ul`
+const DoForYouRow = styled.li`
   display: flex;
   justify-content: space-evenly;
 
@@ -326,7 +391,7 @@ const DoForYouRow = styled.ul`
   }
 `;
 
-const DoForYouBox = styled.li`
+const DoForYouBoxContainer = styled(motion.button)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -336,27 +401,108 @@ const DoForYouBox = styled.li`
   width: 45vw;
   height: 45vw;
   max-height: 220.48px;
+  font-family: Spoqa Han Sans, sans-serif;
+  background-color: transparent;
 `;
 
+export const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.04,
+      // delayChildren: 0.2,
+    },
+  },
+};
+
+const doForYouBoxVariants = {
+  initial: {
+    rotateY: 0,
+  },
+
+  animate: {
+    rotateY: 360,
+  },
+};
+
+const doForYouBoxItemVariants = {
+  initial: {
+    // scale: 0,
+    opacity: 0,
+    x: -3,
+  },
+
+  animate: {
+    // scale: 1,
+    opacity: 1,
+    y: 0,
+
+    transition: {
+      // delay: 0.4,
+      ease: 'easeIn',
+      duration: 0.3,
+    },
+  },
+};
+
 const CommissionInformation = () => {
+  const router = useRouter();
+  const goToEventLanding = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    router.push('/'); // 추후 랜딩 pathname으로 변경
+  };
+
   return (
     <>
-      {/* 모달 콜백 */}
-      {/* <InfoButton onClick={openModal(CommissionInfoText(() => closeModal()))}> */}
-      <InfoButton onClick={() => {}}>
-        <IconInfo16 />
-        <P314px400 color="gray2">수수료 안내</P314px400>
-      </InfoButton>
+      <CommissionInformationContainer>
+        {/* 모달 콜백 */}
+        {/* <InfoButton onClick={openModal(CommissionInfoText(() => closeModal()))}> */}
+        <InfoButton
+          onClick={() => {}}
+          variants={buttonHoverTapVariants}
+          whileTap="whileTap"
+        >
+          <IconInfo16 />
+          <P314px400 color="gray2">수수료 안내</P314px400>
+        </InfoButton>
+        <div className="line" />
+        <P216px700 color="gray4">첫 판매 수수료 100원</P216px700>
+        <P216px400 color="gray4">이벤트 진행 중 😚</P216px400>
+
+        <SmallButton
+          className="small__button"
+          onClick={goToEventLanding}
+          variants={buttonHoverTapVariants}
+          whileHover="whileHover"
+          whileTap="whileTap"
+        >
+          <P314px700 color="gray1">자세히 보기</P314px700>
+        </SmallButton>
+      </CommissionInformationContainer>
     </>
   );
 };
 
-const InfoButton = styled.button`
+const CommissionInformationContainer = styled.div`
+  margin: 48px auto 0;
+
+  .line {
+    width: 1px;
+    height: 48px;
+    background-color: ${({ theme }) => theme.gray2};
+    margin: 24px auto;
+  }
+
+  .small__button {
+    margin: 16px auto 0;
+  }
+`;
+
+const InfoButton = styled(motion.button)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  margin-top: 48px;
+  background-color: transparent;
+  margin: 0 auto;
 
   span {
     margin-top: 1px; // 시각 보정
@@ -375,7 +521,7 @@ const SmallButton = styled(motion.button)`
   border-radius: 2px;
 `;
 
-const smallButtonVariants = {
+const buttonHoverTapVariants = {
   whileHover: {
     scale: 1.05,
   },
