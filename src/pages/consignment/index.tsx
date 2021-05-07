@@ -10,71 +10,24 @@ import P314px400 from '../../foundation/typography/p3-14px-400';
 import P314px700 from '../../foundation/typography/p3-14px-700';
 import Confetti from 'react-dom-confetti';
 import ReactCountUp from 'react-countup';
+import P510px400 from '../../foundation/typography/p5-10px-400';
+import { useRouter } from 'next/dist/client/router';
 
 const ConsignmentHome = () => {
   const [commission, setComminssion] = useState('?원');
-  const [activeCountUp, setActiveCountUp] = useState(false);
-
-  const onActiveCountUp = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setActiveCountUp(true);
-  };
-
-  const config = {
-    angle: 180,
-    spread: 360,
-    startVelocity: 40,
-    elementCount: 70,
-    dragFriction: 0.12,
-    duration: 3000,
-    stagger: 3,
-    width: '10px',
-    height: '10px',
-    perspective: '500px',
-    colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'],
-  };
 
   return (
     <>
       <NavigationBar rightAction="channelTalk" />
-      <Confetti active={true} config={config} />
       <Main>
-        <H227px700 color="black" marginTop="72px">
+        <H227px700 color="black" marginTop="64px">
           중고 명품 판매
         </H227px700>
         <H227px400 color="black" marginTop="-2px">
           쿠돈이 도와드릴게요
         </H227px400>
 
-        <EventBox>
-          <div className="emoji__wrap">
-            <p className="emoji">😲</p>
-          </div>
-
-          <P314px400 color="gray4" marginTop="16px">
-            첫 판매는
-          </P314px400>
-          <div className="p__wrap">
-            {activeCountUp ? (
-              <>
-                <ReactCountUp
-                  start={0}
-                  end={100}
-                  className="react__count__up"
-                />
-              </>
-            ) : (
-              <>
-                <P314px700 color="gray4">?</P314px700>
-              </>
-            )}
-            <P314px700 color="gray4">원</P314px700>
-            <P314px400 color="gray4">에 도와드려요</P314px400>
-          </div>
-          <SmallButton onClick={onActiveCountUp}>
-            <P314px700 color="gray1">?원 확인하기</P314px700>
-          </SmallButton>
-        </EventBox>
+        <EventBox />
 
         <H227px700 color="black" marginTop="48px">
           쿠돈이
@@ -110,7 +63,108 @@ const Main = styled.main`
   }
 `;
 
-const EventBox = styled.div`
+// S of EventBox Component
+const EventBox = () => {
+  const ConfettiConfig = {
+    angle: 180,
+    spread: 360,
+    startVelocity: 40,
+    elementCount: 70,
+    dragFriction: 0.12,
+    duration: 2500,
+    stagger: 3,
+    width: '10px',
+    height: '10px',
+    perspective: '500px',
+    colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'],
+  };
+
+  // 로컬 or 세션 스토리지에 저장한 값.
+
+  const [activeEventAnimation, setActiveEventAnimation] = useState(false);
+  const onActiveEventAnimation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setActiveEventAnimation(!activeEventAnimation);
+  };
+
+  const router = useRouter();
+  const goToEventLanding = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    router.push('/'); // 추후 랜딩 pathname으로 변경
+  };
+
+  return (
+    <EventBoxContainer>
+      <div className="event__sticker">
+        <P510px400 color="gray4">이벤트</P510px400>
+      </div>
+
+      <Confetti active={activeEventAnimation} config={ConfettiConfig} />
+      <div className="emoji__wrap">
+        {!activeEventAnimation ? (
+          // motion.p를 리액트가 구분하기 위해 key 필요
+          <motion.p
+            key="emojiAstonishedFaceVariants"
+            className="emoji"
+            variants={emojiAstonishedFaceVariants}
+            initial="initial"
+            animate="animate"
+          >
+            😲
+          </motion.p>
+        ) : (
+          <motion.p
+            key="emojiCelebrationVariants"
+            className="emoji"
+            variants={emojiCelebrationVariants}
+            initial="initial"
+            animate="animate"
+          >
+            🎉
+          </motion.p>
+        )}
+      </div>
+
+      <P314px400 color="gray4" marginTop="16px">
+        첫 판매는
+      </P314px400>
+      <div className="p__wrap">
+        {activeEventAnimation ? (
+          <>
+            <ReactCountUp
+              start={0}
+              end={100}
+              duration={1}
+              className="react__count__up"
+            />
+          </>
+        ) : (
+          <>
+            <P314px700 color="gray4">?</P314px700>
+          </>
+        )}
+        <P314px700 color="gray4">원</P314px700>
+        <P314px400 color="gray4">에 도와드려요</P314px400>
+      </div>
+      <SmallButton
+        onClick={
+          !activeEventAnimation ? onActiveEventAnimation : goToEventLanding
+        }
+        variants={smallButtonVariants}
+        whileHover="whileHover"
+        whileTap="whileTap"
+      >
+        {!activeEventAnimation ? (
+          <P314px700 color="gray1">?원 확인하기</P314px700>
+        ) : (
+          <P314px700 color="gray1">자세히 보기</P314px700>
+        )}
+      </SmallButton>
+    </EventBoxContainer>
+  );
+};
+
+const EventBoxContainer = styled.div`
   margin: 24px 16px 0;
   display: flex;
   flex-direction: column;
@@ -149,7 +203,24 @@ const EventBox = styled.div`
     color: ${({ theme }) => theme.gray4};
     line-height: 20px;
   }
+
+  .event__sticker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    border: solid 1px ${({ theme }) => theme.gray4};
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 2px 4px;
+
+    p {
+      font-weight: 700;
+    }
+  }
 `;
+// E of EventBox Component
 
 const SmallButton = styled(motion.button)`
   padding: 8px 16px;
@@ -167,15 +238,47 @@ const ButtonWrap = styled.div`
   margin: 0 auto;
 `;
 
-const CoinVariants = {
-  initial: {
-    scaleX: 1,
-    scaleY: 1,
+const smallButtonVariants = {
+  whileHover: {
+    scale: 1.05,
   },
+
+  whileTap: {
+    scale: 0.95,
+    opacity: 0.6,
+  },
+};
+
+const emojiAstonishedFaceVariants = {
+  initial: {
+    scale: 0.85,
+    rotateY: 45,
+  },
+
   animate: {
-    scaleX: [1, 0.8, 1],
-    scaleY: [1, 1.05, 1],
-    rotateY: 23040, // 11520*2
-    transition: { duration: 0.4 },
+    scale: [0.85, 1],
+    rotateY: [45, 0],
+
+    transition: {
+      duration: 0.3,
+      ease: 'easeIn',
+    },
+  },
+};
+
+const emojiCelebrationVariants = {
+  initial: {
+    scale: 0.85,
+    opacity: 0,
+  },
+
+  animate: {
+    scale: [0.85, 1],
+    opacity: [0, 1],
+
+    transition: {
+      duration: 0.15,
+      ease: 'easeOut',
+    },
   },
 };
