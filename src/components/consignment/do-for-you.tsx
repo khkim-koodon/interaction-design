@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import P314px400 from '../../foundation/typography/p3-14px-400';
 
@@ -8,6 +8,19 @@ const WhatCanKoodonDoForYou = () => {
     activeKoodonDoForYouAnimation,
     setActiveKoodonDoForYouAnimation,
   ] = useState(false);
+
+  useEffect(() => {
+    const setAnimation = () => {
+      setActiveKoodonDoForYouAnimation(true);
+      window.sessionStorage.setItem('activeKoodonDoForYouAnimation', 'true');
+      window.removeEventListener('scroll', setAnimation); // 스크롤 이벤트 감지하면 스크롤 이벤트 리스너까지 제거
+    };
+    window.addEventListener('scroll', setAnimation);
+
+    return () => {
+      window.removeEventListener('scroll', setAnimation);
+    };
+  }, []);
 
   // 세션 동안 1번만 '?' 버튼 누를 수 있도록 유도
   // useEffect(() => {

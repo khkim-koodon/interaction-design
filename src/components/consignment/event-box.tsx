@@ -1,13 +1,10 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/dist/client/router';
-import P314px400 from '../../foundation/typography/p3-14px-400';
 import P314px700 from '../../foundation/typography/p3-14px-700';
 import Confetti from 'react-dom-confetti';
 import ReactCountUp from 'react-countup';
 import P510px400 from '../../foundation/typography/p5-10px-400';
-import P118px400 from '../../foundation/typography/p1-18px-400';
 import P216px400 from '../../foundation/typography/p2-16px-400';
 import P216px700 from '../../foundation/typography/p2-16px-700';
 
@@ -111,7 +108,13 @@ const EventBox = () => {
       {!activeEventAnimation ? (
         <></>
       ) : (
-        <div ref={eventInfoRef} className="p__event__info__wrap">
+        <motion.div
+          ref={eventInfoRef}
+          variants={pEventInfoVariants}
+          initial="initial"
+          animate="animate"
+          className="p__event__info__wrap"
+        >
           <P216px700 color="gray4">어떤 이벤트인가요?</P216px700>
           <P216px400 color="gray3" marginTop="4px">
             그동안 처분하고 싶었던 중고 명품의 판매를 쿠돈에 맡겨주세요. 이벤트
@@ -126,7 +129,7 @@ const EventBox = () => {
             참여가 되고, 맡기신 상품 중 첫 번째로 판매가 완료된 상품의 수수료는
             100원만 부담하시면 됩니다 😄
           </P216px400>
-        </div>
+        </motion.div>
       )}
     </EventBoxContainer>
   );
@@ -223,5 +226,19 @@ const buttonHoverTapVariants = {
   whileTap: {
     scale: 0.95,
     opacity: 0.6,
+  },
+};
+
+const pEventInfoVariants = {
+  initial: {
+    scale: 0.9,
+    opacity: 0,
+    y: 50,
+  },
+
+  animate: {
+    scale: 1,
+    opacity: 1,
+    y: 0,
   },
 };

@@ -15,6 +15,7 @@ import { useRouter } from 'next/dist/client/router';
 import IconInfo16 from '../../foundation/svg/icn-information-16';
 import P216px700 from '../../foundation/typography/p2-16px-700';
 import P216px400 from '../../foundation/typography/p2-16px-400';
+import TabBar from '../../components/tab-bar';
 
 const ConsignmentHome = () => {
   return (
@@ -46,6 +47,7 @@ const ConsignmentHome = () => {
           />
         </BigButtonWrap>
       </Main>
+      <TabBar />
     </>
   );
 };
@@ -93,13 +95,13 @@ const EventBox = () => {
   };
 
   // 세션 동안 1번만 '?원 확인' 버튼 누를 수 있도록 유도
-  useEffect(() => {
-    const isActiveEventAnimationInSessionStorage = window.sessionStorage.getItem(
-      'activeEventAnimation'
-    );
-    isActiveEventAnimationInSessionStorage === 'true' &&
-      setActiveEventAnimation(true);
-  }, []);
+  // useEffect(() => {
+  //   const isActiveEventAnimationInSessionStorage = window.sessionStorage.getItem(
+  //     'activeEventAnimation'
+  //   );
+  //   isActiveEventAnimationInSessionStorage === 'true' &&
+  //     setActiveEventAnimation(true);
+  // }, []);
 
   const [activeEventAnimation, setActiveEventAnimation] = useState(false);
   const onActiveEventAnimation = (e: React.MouseEvent<HTMLButtonElement>) => {

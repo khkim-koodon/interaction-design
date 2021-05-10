@@ -6,9 +6,8 @@ import IconConsignment24 from '../foundation/svg/tab-bar/icn_consignment_24';
 import IconMy24 from '../foundation/svg/tab-bar/icn_my_24';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/dist/client/router';
 
-const TabBar = ({ pathname }: { pathname: string }) => {
+const TabBar = ({ pathname }: { pathname?: string }) => {
   useEffect(() => {
     if (pathname === '/') {
       setOnOff([1, 0, 0]);
