@@ -7,6 +7,7 @@ import P314px400 from '../../foundation/typography/p3-14px-400';
 import EventBox from '../../components/consignment/event-box';
 import CommissionInformation from '../../components/consignment/commission-information';
 import WhatCanKoodonDoForYou from '../../components/consignment/do-for-you';
+import { useRef } from 'react';
 
 const ConsignmentHome = () => {
   return (
@@ -18,8 +19,9 @@ const ConsignmentHome = () => {
           중고 명품 판매
         </H227px700>
         <H227px400 color="black" marginTop="-2px">
-          쿠돈이 도와드릴게요
+          쿠돈이 대신해드릴게요
         </H227px400>
+
         <P314px400 color="gray3" marginTop="16px">
           쿠돈이 무엇을 도와주나요? 🤔
         </P314px400>
@@ -32,7 +34,7 @@ const ConsignmentHome = () => {
 
         <BigButtonWrap>
           <BigBtn //
-            text="판매 대행 신청"
+            text="판매 대행 신청서 작성"
             textColor="white"
             validation={true}
           />

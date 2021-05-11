@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import P314px400 from '../../foundation/typography/p3-14px-400';
+import IconScrollDown24 from '../../foundation/svg/icn_scroll_down_24';
 
 const WhatCanKoodonDoForYou = () => {
   const [
@@ -16,10 +17,6 @@ const WhatCanKoodonDoForYou = () => {
       window.removeEventListener('scroll', setAnimation); // 스크롤 이벤트 감지하면 스크롤 이벤트 리스너까지 제거
     };
     window.addEventListener('scroll', setAnimation);
-
-    return () => {
-      window.removeEventListener('scroll', setAnimation);
-    };
   }, []);
 
   // 세션 동안 1번만 '?' 버튼 누를 수 있도록 유도
@@ -43,16 +40,16 @@ const WhatCanKoodonDoForYou = () => {
             activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
             setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
             svgSrc="/icons/icn_marketing_48.svg"
-            text1="빠른 판매 위한"
-            text2="마케팅"
+            text1="재빠른 판매 돕는"
+            text2="광고"
           />
           <div className="gap" />
           <DoForYouBox
             activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
             setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
-            svgSrc="/icons/icn_camera_48.svg"
-            text1="전문적인"
-            text2="상품 사진 촬영"
+            svgSrc="/icons/icn_pricint_48.svg"
+            text1="가격 상담 후"
+            text2="자유로운 가격 조정"
           />
         </DoForYouRow>
 
@@ -60,25 +57,37 @@ const WhatCanKoodonDoForYou = () => {
           <DoForYouBox
             activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
             setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
-            svgSrc="/icons/icn_packing_shipping_48.svg"
-            text1="구매 고객에게"
-            text2="포장 후 택배 발송"
+            svgSrc="/icons/icn_customer_center_48.svg"
+            text1="내 명품"
+            text2="거래 문의 응대"
           />
           <div className="gap" />
           <DoForYouBox
             activeKoodonDoForYouAnimation={activeKoodonDoForYouAnimation}
             setActiveKoodonDoForYouAnimation={setActiveKoodonDoForYouAnimation}
-            svgSrc="/icons/icn_seoul_48.svg"
-            text1="서울 지역"
-            text2="무료 방문 수거"
+            svgSrc="/icons/icn_packing_shipping_48.svg"
+            text1="구매 고객에게"
+            text2="포장 후 택배 발송"
           />
         </DoForYouRow>
         <Line />
         <P314px400 color="gray4" marginTop="24px">
-          🏠 집에서 쉬고 있는 중고 명품 쿠돈에 맡겨
+          ✍️ 판매 대행 신청 후 택배로 보내주세요!
         </P314px400>
-        <P314px400 color="gray4">편하게 판매해보면 어떠세요?</P314px400>
+        <P314px400 color="gray4">
+          서울 지역은 무료 방문 수거 서비스를 제공합니다
+        </P314px400>
       </DoForYouWrap>
+
+      {!activeKoodonDoForYouAnimation && (
+        <ScrollDownInteraction
+          variants={ScrollDownInteractionVariants}
+          initial="initial"
+          animate="animate"
+        >
+          <IconScrollDown24 />
+        </ScrollDownInteraction>
+      )}
     </>
   );
 };
@@ -91,6 +100,36 @@ const Line = styled.div`
   background-color: ${({ theme }) => theme.gray2};
   margin: 48px auto 0;
 `;
+
+const ScrollDownInteraction = styled(motion.div)`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 128px;
+  left: 0;
+  right: 0;
+`;
+
+const ScrollDownInteractionVariants = {
+  initial: {
+    y: -12,
+    opacity: 0,
+    scale: 0.9,
+  },
+
+  animate: {
+    y: 6,
+    opacity: 0.4,
+    scale: 1,
+
+    transition: {
+      duration: 1.2,
+      yoyo: Infinity,
+      // ease: 'easeInOut',
+    },
+  },
+};
 
 const DoForYouBox = ({
   activeKoodonDoForYouAnimation,

@@ -9,6 +9,10 @@ import P216px400 from '../../foundation/typography/p2-16px-400';
 import P216px700 from '../../foundation/typography/p2-16px-700';
 
 const EventBox = () => {
+  // 이벤트 월 자동으로 바뀌도록
+  const today = new Date();
+  const month = String(today.getMonth() + 1);
+
   const ConfettiConfig = {
     angle: 180,
     spread: 360,
@@ -49,7 +53,7 @@ const EventBox = () => {
   return (
     <EventBoxContainer>
       <div className="event__sticker">
-        <P510px400 color="gray4">5월 이벤트</P510px400>
+        <P510px400 color="gray4">{month}월 이벤트</P510px400>
       </div>
 
       <Confetti active={activeEventAnimation} config={ConfettiConfig} />
@@ -70,7 +74,7 @@ const EventBox = () => {
       </div>
 
       <P216px400 color="gray4" marginTop="16px">
-        첫 판매는
+        첫 판매는 누구든지
       </P216px400>
       <div className="p__wrap">
         {!activeEventAnimation ? (
@@ -138,7 +142,7 @@ const EventBox = () => {
 export default EventBox;
 
 const EventBoxContainer = styled.div`
-  margin: 24px 16px 0;
+  margin: 36px 16px 0;
   padding-bottom: 48px;
   display: flex;
   flex-direction: column;
