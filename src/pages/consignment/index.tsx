@@ -7,7 +7,6 @@ import P314px400 from '../../foundation/typography/p3-14px-400';
 import EventBox from '../../components/consignment/event-box';
 import CommissionInformation from '../../components/consignment/commission-information';
 import WhatCanKoodonDoForYou from '../../components/consignment/do-for-you';
-import { useRef } from 'react';
 
 const ConsignmentHome = () => {
   return (

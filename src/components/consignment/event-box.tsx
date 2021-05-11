@@ -59,7 +59,14 @@ const EventBox = () => {
       <Confetti active={activeEventAnimation} config={ConfettiConfig} />
       <div className="event__price__wrap">
         {!activeEventAnimation ? (
-          <p className="p__react__count__up__big">?원</p>
+          <motion.p
+            className="p__react__count__up__big"
+            variants={questionMarkVariants}
+            initial="initial"
+            animate="animate"
+          >
+            ?원
+          </motion.p>
         ) : (
           <>
             <ReactCountUp
@@ -244,5 +251,18 @@ const pEventInfoVariants = {
     scale: 1,
     opacity: 1,
     y: 0,
+  },
+};
+
+const questionMarkVariants = {
+  initial: { y: -1, scale: 0.7, rotateY: 0 },
+
+  animate: {
+    y: 1,
+    scale: 1,
+    rotateY: 360,
+    transition: {
+      duration: 1,
+    },
   },
 };

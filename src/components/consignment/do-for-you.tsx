@@ -111,7 +111,24 @@ const ScrollDownInteraction = styled(motion.div)`
   right: 0;
 `;
 
-const ScrollDownInteractionVariants = {
+const ScrollDownInteractionVariants: {
+  initial: {
+    y: number;
+    opacity: number;
+    scale: number;
+  };
+
+  animate: {
+    y: number;
+    opacity: number;
+    scale: number;
+    transition: {
+      repeat: number;
+      repeatType: 'reverse' | 'loop' | 'mirror' | undefined;
+      duration: number;
+    };
+  };
+} = {
   initial: {
     y: -12,
     opacity: 0,
@@ -124,9 +141,9 @@ const ScrollDownInteractionVariants = {
     scale: 1,
 
     transition: {
+      repeat: Infinity,
+      repeatType: 'reverse',
       duration: 1.2,
-      yoyo: Infinity,
-      // ease: 'easeInOut',
     },
   },
 };
@@ -159,7 +176,14 @@ const DoForYouBox = ({
         variants={doForYouBoxVariants}
       >
         {!activeKoodonDoForYouAnimation ? (
-          <p className="question__mark">?</p>
+          <motion.p
+            variants={questionMarkVariants}
+            initial="initial"
+            animate="animate"
+            className="question__mark"
+          >
+            ?
+          </motion.p>
         ) : (
           <>
             <motion.div
@@ -247,20 +271,30 @@ const doForYouBoxVariants = {
 
 const doForYouBoxItemVariants = {
   initial: {
-    // scale: 0,
     opacity: 0,
     x: -3,
   },
 
   animate: {
-    // scale: 1,
     opacity: 1,
     y: 0,
 
     transition: {
-      // delay: 0.4,
       ease: 'easeIn',
       duration: 0.3,
+    },
+  },
+};
+
+const questionMarkVariants = {
+  initial: { y: -1, scale: 0.7, rotateY: 0 },
+
+  animate: {
+    y: 1,
+    scale: 1,
+    rotateY: 360,
+    transition: {
+      duration: 1,
     },
   },
 };
