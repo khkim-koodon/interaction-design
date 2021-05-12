@@ -11,6 +11,7 @@ import WhatCanKoodonDoForYou from '../../components/consignment/do-for-you';
 const ConsignmentHome = () => {
   return (
     <>
+      {/* NavigationBar 교체 필요 */}
       <NavigationBar rightAction="channelTalk" />
       <Main>
         {/* marginTop Production에서 수정 필요 */}
@@ -31,6 +32,7 @@ const ConsignmentHome = () => {
 
         <CommissionInformation />
 
+        {/* BigButton 교체 필요 */}
         <BigButtonWrap>
           <BigBtn //
             text="판매 대행 신청서 작성"

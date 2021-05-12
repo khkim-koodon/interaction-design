@@ -5,28 +5,32 @@ import P314px400 from '../../foundation/typography/p3-14px-400';
 import IconScrollDown24 from '../../foundation/svg/icn_scroll_down_24';
 
 const WhatCanKoodonDoForYou = () => {
-  const [
-    activeKoodonDoForYouAnimation,
-    setActiveKoodonDoForYouAnimation,
-  ] = useState(false);
+  const [activeKoodonDoForYouAnimation, setActiveKoodonDoForYouAnimation] =
+    useState(false);
 
   useEffect(() => {
     const setAnimation = () => {
       setActiveKoodonDoForYouAnimation(true);
       window.sessionStorage.setItem('activeKoodonDoForYouAnimation', 'true');
+      // production에서 추가
+      // sendAmplitudeData("scroll_do_for_you_consignment");
       window.removeEventListener('scroll', setAnimation); // 스크롤 이벤트 감지하면 스크롤 이벤트 리스너까지 제거
     };
     window.addEventListener('scroll', setAnimation);
+
+    return () => {
+      window.removeEventListener('scroll', setAnimation);
+    };
   }, []);
 
-  // 세션 동안 1번만 '?' 버튼 누를 수 있도록 유도
-  // useEffect(() => {
-  //   const activeKoodonDoForYouAnimation = window.sessionStorage.getItem(
-  //     'activeKoodonDoForYouAnimation'
-  //   );
-  //   activeKoodonDoForYouAnimation === 'true' &&
-  //     setActiveKoodonDoForYouAnimation(true);
-  // }, []);
+  // 세션 동안 1번만 '?' 나오도록
+  useEffect(() => {
+    const activeKoodonDoForYouAnimation = window.sessionStorage.getItem(
+      'activeKoodonDoForYouAnimation'
+    );
+    activeKoodonDoForYouAnimation === 'true' &&
+      setActiveKoodonDoForYouAnimation(true);
+  }, []);
 
   return (
     <>

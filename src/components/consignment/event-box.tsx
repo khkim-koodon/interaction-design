@@ -7,6 +7,7 @@ import ReactCountUp from 'react-countup';
 import P510px400 from '../../foundation/typography/p5-10px-400';
 import P216px400 from '../../foundation/typography/p2-16px-400';
 import P216px700 from '../../foundation/typography/p2-16px-700';
+import { useInView } from 'react-intersection-observer';
 
 const EventBox = () => {
   // 이벤트 월 자동으로 바뀌도록
@@ -27,27 +28,36 @@ const EventBox = () => {
     colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'],
   };
 
+  const { ref, inView, entry } = useInView({
+    threshold: 0,
+  });
+
   // 세션 동안 1번만 '?원 확인' 버튼 누를 수 있도록 유도
-  //   useEffect(() => {
-  //     const isActiveEventAnimationInSessionStorage = window.sessionStorage.getItem(
-  //       'activeEventAnimation'
-  //     );
-  //     isActiveEventAnimationInSessionStorage === 'true' &&
-  //       setActiveEventAnimation(true);
-  //   }, []);
+  useEffect(() => {
+    const isActiveEventAnimationInSessionStorage = sessionStorage.getItem(
+      'activeEventAnimation'
+    );
+    isActiveEventAnimationInSessionStorage === 'true' &&
+      setActiveEventAnimation(true);
+  }, []);
 
   const [activeEventAnimation, setActiveEventAnimation] = useState(false);
   const onActiveEventAnimation = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setActiveEventAnimation(!activeEventAnimation); // Production에서 변경
-    window.sessionStorage.setItem('activeEventAnimation', 'true');
+    setActiveEventAnimation(true);
+    // production에서 추가
+    // sendAmplitudeData("tap_confirm_question_mark");
+    sessionStorage.setItem('activeEventAnimation', 'true');
   };
 
+  // 이벤트 안내 버튼 callback
   const eventInfoRef = useRef<HTMLDivElement>(null);
   const goToEventInfo = () => {
     eventInfoRef?.current?.scrollIntoView({
       behavior: 'smooth',
     });
+    // production에서 추가
+    // sendAmplitudeData("tap_100_event_info);
   };
 
   return (
@@ -56,17 +66,24 @@ const EventBox = () => {
         <P510px400 color="gray4">{month}월 이벤트</P510px400>
       </div>
 
-      <Confetti active={activeEventAnimation} config={ConfettiConfig} />
+      <Confetti
+        active={activeEventAnimation && inView}
+        config={ConfettiConfig}
+      />
       <div className="event__price__wrap">
         {!activeEventAnimation ? (
-          <motion.p
-            className="p__react__count__up__big"
-            variants={questionMarkVariants}
-            initial="initial"
-            animate="animate"
-          >
-            ?원
-          </motion.p>
+          <>
+            <motion.p
+              className="p__react__count__up__big"
+              variants={questionMarkVariants}
+              initial="initial"
+              animate={inView ? 'animate' : 'initial'}
+              ref={ref}
+            >
+              ?
+            </motion.p>
+            <p className="p__react__count__up__big">원</p>
+          </>
         ) : (
           <>
             <ReactCountUp
@@ -130,7 +147,7 @@ const EventBox = () => {
           <P216px400 color="gray3" marginTop="4px">
             그동안 처분하고 싶었던 중고 명품의 판매를 쿠돈에 맡겨주세요. 이벤트
             기간에 맡기신 중고 명품 중 판매가 완료된 첫 번째 상품은 13%~14.9%의
-            수수료 대신 100원의 수수료만 부담하시면 된답니다!
+            수수료 대신 100원의 수수료만 부담하시면 된답니다.
           </P216px400>
           <P216px700 color="gray4" marginTop="24px">
             이미 쿠돈에 맡긴 상품이 있어요! 이벤트에 참여할 수 없는 건가요?
@@ -157,7 +174,7 @@ const EventBoxContainer = styled.div`
   align-items: center;
   position: relative;
   background-color: ${({ theme }) => theme.white};
-  box-shadow: 1px 2px 13px rgba(52, 84, 33, 0.1);
+  box-shadow: 0px 0px 24px rgba(52, 84, 33, 0.1);
   border-radius: 20px;
 
   .event__price__wrap {
@@ -258,7 +275,7 @@ const questionMarkVariants = {
   initial: { y: -1, scale: 0.7, rotateY: 0 },
 
   animate: {
-    y: 1,
+    y: 0,
     scale: 1,
     rotateY: 360,
     transition: {
