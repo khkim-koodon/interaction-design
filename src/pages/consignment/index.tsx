@@ -48,7 +48,8 @@ const ConsignmentHome = () => {
 export default ConsignmentHome;
 
 const Main = styled.main`
-  overflow-x: hidden; // 애니메이션 작동 시 width 작아지는 문제 해결
+  // 애니메이션 작동 시 width 작아지는 문제 해결
+  overflow-x: hidden;
   overflow-y: auto;
   max-width: 480px;
   margin: 0 auto;
