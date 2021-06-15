@@ -21,6 +21,13 @@ const Index = () => {
           </a>
         </Link>
 
+        <Link href="/interactive-component/like-morphing">
+          <a>
+            <H616px700 color="black" marginTop="72px">
+              LikeMorphing
+            </H616px700>
+          </a>
+        </Link>
         {/* <PopSpeechBubble
           key={count}
           text="1월 한 달간 택배 신청이 무료!"
