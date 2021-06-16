@@ -13,7 +13,7 @@ const WhatCanKoodonDoForYou = () => {
       setActiveKoodonDoForYouAnimation(true);
       window.sessionStorage.setItem('activeKoodonDoForYouAnimation', 'true');
       // production에서 추가
-      // sendAmplitudeData("scroll_do_for_you_consignment");
+      // sendAmplitudeData("trigger_do_for_you_consignment");
       window.removeEventListener('scroll', setAnimation); // 스크롤 이벤트 감지하면 스크롤 이벤트 리스너까지 제거
     };
     window.addEventListener('scroll', setAnimation);

@@ -28,6 +28,14 @@ const Index = () => {
             </H616px700>
           </a>
         </Link>
+
+        <Link href="/interactive-component/check-circle">
+          <a>
+            <H616px700 color="black" marginTop="72px">
+              CheckCircle
+            </H616px700>
+          </a>
+        </Link>
         {/* <PopSpeechBubble
           key={count}
           text="1월 한 달간 택배 신청이 무료!"
