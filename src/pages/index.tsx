@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import FilterReset from '../framer/filter-reset';
+import FilterReset from '../framer/js/filter-reset';
 import H616px700 from '../foundation/typography/h6-16px-700';
 
 const Index = () => {
