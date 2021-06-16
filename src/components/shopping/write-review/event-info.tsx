@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import PopSpeechBubble from '../../../framer/pop-speech-bubble';
+import PopSpeechBubble from '../../../framer/js/pop-speech-bubble';
 
 const EventInfo = ({ starAnimation }: { starAnimation: boolean }) => {
   return (
