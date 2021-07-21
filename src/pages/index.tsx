@@ -20,6 +20,14 @@ const Index = () => {
           </a>
         </Link>
 
+        <Link href="/interactive-component/check-circle">
+          <a>
+            <H616px700 color="black" marginTop="72px">
+              CheckCircle
+            </H616px700>
+          </a>
+        </Link>
+
         <Link href="/interactive-component/rotating-stars">
           <a>
             <H616px700 color="black" marginTop="72px">
@@ -28,21 +36,14 @@ const Index = () => {
           </a>
         </Link>
 
-        {/* <Link href="/interactive-component/like-morphing">
+        <Link href="/interactive-component/fixed-bottom-button">
           <a>
             <H616px700 color="black" marginTop="72px">
-              LikeMorphing
-            </H616px700>
-          </a>
-        </Link> */}
-
-        <Link href="/interactive-component/check-circle">
-          <a>
-            <H616px700 color="black" marginTop="72px">
-              CheckCircle
+              FixedBottomButton
             </H616px700>
           </a>
         </Link>
+
         {/* <PopSpeechBubble
           key={count}
           text="1월 한 달간 택배 신청이 무료!"
