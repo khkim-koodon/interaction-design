@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import FilterReset from '../framer/js/filter-reset';
 import H616px700 from '../foundation/typography/h6-16px-700';
 
 const Index = () => {
@@ -21,13 +20,21 @@ const Index = () => {
           </a>
         </Link>
 
-        <Link href="/interactive-component/like-morphing">
+        <Link href="/interactive-component/rotating-stars">
+          <a>
+            <H616px700 color="black" marginTop="72px">
+              RotateStars
+            </H616px700>
+          </a>
+        </Link>
+
+        {/* <Link href="/interactive-component/like-morphing">
           <a>
             <H616px700 color="black" marginTop="72px">
               LikeMorphing
             </H616px700>
           </a>
-        </Link>
+        </Link> */}
 
         <Link href="/interactive-component/check-circle">
           <a>
